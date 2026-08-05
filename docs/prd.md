@@ -41,14 +41,15 @@ Divulgar os serviços de Valnez Júnior, Designer Engineer, e converter visitant
 
 ### 5.2 Serviços
 - **Título da seção:** "O que eu faço"
-- **Serviços:**
-  | Serviço | Descrição (1–2 linhas) | Ícone (lucide) |
-  |---|---|---|
-  | Brand Design | Identidade visual completa, do conceito à aplicação — sua marca com consistência em cada ponto de contato. | `palette` |
-  | UI/UX Design | Interfaces desenhadas com foco em quem usa: experiência clara, acessível e alinhada ao seu produto. | `pen-tool` |
-  | Product Design | Do conceito ao produto funcional, ponta a ponta — cuidando de cada etapa do processo. | `rocket` |
+- **Categorias** (cada card abre um Modal com a descrição completa + subitens):
 
-> Descrições acima são rascunho de copy a partir do que você passou ("Brand Design, UI/UX Design, Product Design — faço tudo de ponta a ponta, do conceito ao produto funcional"); ícones são sugestão minha. Revise antes da Etapa 5.
+  | Categoria | Descrição (1–2 linhas) | Subitens | Ícone (lucide) |
+  |---|---|---|---|
+  | Digital Design | Produtos digitais pensados de ponta a ponta — da interface ao sistema que sustenta tudo. | UI/UX Design, Product Design, Design System | `monitor-smartphone` |
+  | Brand Design | Identidade visual completa, do conceito à aplicação em cada ponto de contato da marca. | Branding, Identidade Visual | `palette` |
+  | Print | Peças físicas com o mesmo cuidado do digital, prontas pra produção. | Design de Embalagem, Peças Gráficas | `printer` |
+
+> Reorganização pedida em 2026-08-05: de 3 serviços soltos (Brand Design, UI/UX Design, Product Design) pra 3 categorias com subitens. Descrições e nomes dos subitens em português são rascunho meu a partir do que você passou em inglês ("Digital Design (UI/UX, Product Design, Design System), Brand Design (Branding, Visual Identity), Print (Packaging Design, Print Design)") — mantive nomes de disciplina consolidados em inglês (UI/UX Design, Product Design, Design System, Branding, Digital Design, Brand Design, Print — já eram assim antes) e traduzi só os subitens que soam mais naturais em português (Visual Identity → Identidade Visual, Packaging Design → Design de Embalagem, Print Design → Peças Gráficas). Revise à vontade.
 
 ### 5.3 Sobre / Portfólio
 - **Apresentação:** _[PENDENTE — Valnez ainda está organizando esse conteúdo, revisitar este tópico antes da Etapa 6]_
