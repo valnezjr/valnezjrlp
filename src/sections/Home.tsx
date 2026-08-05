@@ -28,6 +28,22 @@ import type { SectionId } from "@/lib/navigation";
 // 7800/5250 simplificado) faz a caixa casar com o desenho — preenche
 // de verdade, sem aumentar a altura ocupada na página.
 //
+// className="!p-0 lg:..." no Hero: achado ao verificar essa correção —
+// `.ms-hero` (mothership-ds) já vem com padding vertical generoso
+// próprio (~84px em cima, 56px embaixo, pensado pra um Hero de tela
+// cheia usado sozinho), que somado ao padding do SectionShell (que já
+// reserva espaço pra navbar) sobrava conteúdo maior que a viewport em
+// alturas baixas — o texto ficava atrás da navbar ou cortado embaixo
+// em 360×740/375×667/360×640 (critério de aceite do prd.md §7: "nenhuma
+// resolução... gera scroll ou conteúdo cortado/atrás da navbar"), sem
+// nenhum scroll aparecer (por isso passava despercebido: `overflow:
+// hidden` do SectionShell escondia o excesso ao centralizar, não virava
+// barra de rolagem). Zerado no mobile (o SectionShell já reserva o
+// espaço certo sozinho) e restaurado ao valor original só a partir de
+// lg (`!important` via Tailwind porque mothership-ds/styles.css importa
+// depois do Tailwind em main.tsx — sem isso a ordem no CSS deixaria a
+// regra da lib ganhar do utilitário).
+//
 // style={{ background: "none" }} no Splash: .ms-splash sempre pinta o
 // próprio --bg-base/--bg-page por baixo (faz sentido em tela cheia,
 // onde precisa cobrir a página) — aqui, flutuando ao lado do Hero, isso
@@ -56,6 +72,7 @@ export function Home({ onNavigate }: { onNavigate: (section: SectionId) => void 
       <div className="flex w-full max-w-5xl flex-col items-center gap-4 sm:gap-6 lg:flex-row lg:justify-between lg:gap-8">
         <div className="flex-1">
           <Hero
+            className="!p-0 lg:!px-6 lg:!pt-[84px] lg:!pb-14"
             title={
               <>
                 Do componente ao sistema, da marca ao <HeroHighlight>produto</HeroHighlight>.
