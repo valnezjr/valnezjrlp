@@ -18,9 +18,15 @@ import type { SectionId } from "@/lib/navigation";
 // telas estreitas (`order-first` na coluna, `flex-col`), crescendo e
 // indo pro lado a partir de lg (`lg:order-none` volta à ordem do DOM —
 // Hero primeiro — que em `lg:flex-row` põe a logo à direita). Tamanho
-// mobile (`h-44`/`sm:h-56`) veio de um segundo round de feedback: a
-// primeira correção (`h-28`/`sm:h-36`) ainda ficava pequena demais pra
-// reconhecer o desenho.
+// mobile passou por três rounds de feedback: `h-28` sumia demais,
+// `h-44` (caixa quadrada) ainda parecia "pequena e flutuando num
+// padding grande" — o motivo real era a caixa quadrada: o `viewBox` do
+// `LogoMark` (dirigível+nome) é bem mais largo que alto (7800×5250 ≈
+// 1,49:1), então dentro de um quadrado ele sempre desenhava com
+// bastante espaço morto em cima/embaixo (letterbox), por menor que a
+// caixa fosse. `aspect-[52/35]` (mesma proporção do viewBox,
+// 7800/5250 simplificado) faz a caixa casar com o desenho — preenche
+// de verdade, sem aumentar a altura ocupada na página.
 //
 // style={{ background: "none" }} no Splash: .ms-splash sempre pinta o
 // próprio --bg-base/--bg-page por baixo (faz sentido em tela cheia,
@@ -68,7 +74,7 @@ export function Home({ onNavigate }: { onNavigate: (section: SectionId) => void 
             }
           />
         </div>
-        <div className="relative order-first h-44 w-44 shrink-0 sm:h-56 sm:w-56 lg:order-none lg:h-96 lg:w-96">
+        <div className="relative order-first aspect-[52/35] w-64 shrink-0 sm:w-80 lg:order-none lg:aspect-auto lg:h-96 lg:w-96">
           <Splash inline persistent ready instant={skipIntro} style={{ background: "none" }} />
         </div>
       </div>
