@@ -35,7 +35,7 @@ Divulgar os serviços de Valnez Júnior, Designer Engineer, e converter visitant
 - **Subtítulo:** Valnez Júnior, Designer Engineer — projetos completos, acessíveis e com identidade, para negócios locais e empresas de tecnologia.
 - **CTA primário:** "Fale comigo" → seção Contato
 - **CTA secundário:** "Ver serviços" → seção Serviços
-- **Visual de apoio:** placeholder abstrato em CSS/SVG (nada definido ainda)
+- **Visual de apoio:** logo animada da marca (`Splash` do mothership-ds em modo `inline`+`persistent`, decisão de 2026-08-05) — ao lado do texto em telas ≥1024px, escondida abaixo disso (ver `docs/architecture.md` § Registro de decisões)
 
 > Título/subtítulo acima são rascunho de copy, derivados da proposta de valor (§3) — ajuste à vontade antes da Etapa 4.
 
