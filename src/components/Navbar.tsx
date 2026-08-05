@@ -1,5 +1,5 @@
 import { useId, useState } from "react";
-import { Drawer } from "mothership-ds";
+import { Drawer, LogoMark } from "mothership-ds";
 import { SECTIONS, type SectionId } from "@/lib/navigation";
 import { cn } from "@/lib/utils";
 
@@ -17,6 +17,10 @@ import { cn } from "@/lib/utils";
  * própria gaveta mobile (architecture.md § Registro de decisões #9),
  * side="right" (não o padrão "left" da Sidebar) por ficar do mesmo lado
  * do botão hamburguer, que aqui sempre cai à direita.
+ *
+ * Marca: `LogoMark part="word"` (mothership-ds v1.5.0) no lugar do texto
+ * "valnezjr" — o nome da própria marca do design system usado no projeto,
+ * já assentado e estático (sem depender de estar dentro de uma `Splash`).
  */
 export function Navbar({
   active,
@@ -39,7 +43,9 @@ export function Navbar({
         aria-label="Navegação principal"
         className={cn("ms-navbar", open && "ms-navbar--open")}
       >
-        <span className="ms-navbar__brand">valnezjr</span>
+        <span className="ms-navbar__brand inline-flex items-center">
+          <LogoMark part="word" className="h-6 w-auto" />
+        </span>
         {SECTIONS.map((section) => (
           <button
             key={section.id}

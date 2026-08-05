@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Button, Hero, HeroHighlight, Splash } from "mothership-ds";
 import { SectionShell } from "@/components/SectionShell";
 import type { SectionId } from "@/lib/navigation";
@@ -21,7 +22,23 @@ import type { SectionId } from "@/lib/navigation";
 // criava uma segunda instância do fundo dentro de uma caixa visível.
 // Sem background próprio, só o LogoMark (SVG sem fundo) fica por cima
 // do LivingBackground real da página, sem emenda.
+//
+// hasPlayedHomeIntro: variável de módulo (não estado do componente) —
+// Home desmonta por completo toda vez que a navegação troca de seção
+// (architecture.md §3, um componente montado por vez), então um useState
+// aqui reiniciaria a cada volta pra Home. O módulo, por outro lado,
+// sobrevive: só reseta com um reload real da página. `instant` (mothership-ds
+// v1.5.0) faz o Splash pular a animação de entrada nas remontagens
+// seguintes — sem isso, o nome "Mothership" reaparecia centralizado no
+// dirigível e refazia a montagem toda vez que a seção voltava a ficar ativa.
+let hasPlayedHomeIntro = false;
+
 export function Home({ onNavigate }: { onNavigate: (section: SectionId) => void }) {
+  const skipIntro = hasPlayedHomeIntro;
+  useEffect(() => {
+    hasPlayedHomeIntro = true;
+  }, []);
+
   return (
     <SectionShell>
       <div className="flex w-full max-w-5xl flex-col items-center gap-8 lg:flex-row lg:justify-between">
@@ -46,7 +63,7 @@ export function Home({ onNavigate }: { onNavigate: (section: SectionId) => void 
           />
         </div>
         <div className="relative hidden h-96 w-96 shrink-0 lg:block">
-          <Splash inline persistent ready style={{ background: "none" }} />
+          <Splash inline persistent ready instant={skipIntro} style={{ background: "none" }} />
         </div>
       </div>
     </SectionShell>
