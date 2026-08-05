@@ -22,9 +22,9 @@ interface ServiceItem {
 }
 
 // docs/prd.md §5.2. Reorganizado de 3 serviços soltos pra 3 categorias
-// com subitens — cada card abre um Modal com a descrição completa e um
-// mini bento grid decorativo (um ícone por subitem, cor do sistema
-// rotacionada, estética "neoglass" das badges de estado/status).
+// com subitens — cada card abre um Modal com a descrição completa e uma
+// fileira de ícones decorativa no cabeçalho (um por subitem, cor do
+// sistema rotacionada, estética "neoglass" das badges de estado/status).
 const SERVICE_CATEGORIES = [
   {
     icon: MonitorSmartphone,
@@ -60,19 +60,14 @@ const SERVICE_CATEGORIES = [
 
 type ServiceCategory = (typeof SERVICE_CATEGORIES)[number];
 
-/** Mini bento decorativo do topo do Modal — um ícone por subitem, cor do
- * sistema por tile, mesmo par vidro-fosco + borda tonal das badges de
- * estado (`.ms-badge--{tone}`), com o hover reativo padrão (HoverEdge). */
-function ServiceModalBento({ items }: { items: readonly ServiceItem[] }) {
+/** Fileira decorativa de ícones no cabeçalho do Modal (Modal.headerExtra,
+ * mothership-ds v1.4.0+) — um ícone por subitem, cor do sistema por tile,
+ * mesmo par vidro-fosco + borda tonal das badges de estado
+ * (`.ms-badge--{tone}`), com o hover reativo padrão (HoverEdge). Poucos
+ * ícones (2–3) não chegam a formar um bento de verdade — só uma linha. */
+function ServiceIconRow({ items }: { items: readonly ServiceItem[] }) {
   return (
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(2, 36px)",
-        gap: "var(--space-2)",
-        marginLeft: "auto",
-      }}
-    >
+    <div style={{ display: "flex", gap: "var(--space-2)" }}>
       {items.map(({ icon: Icon, tone }, i) => (
         <HoverEdge
           key={i}
@@ -85,14 +80,14 @@ function ServiceModalBento({ items }: { items: readonly ServiceItem[] }) {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              width: 36,
-              height: 36,
+              width: 28,
+              height: 28,
               borderRadius: 8,
               border: `1px solid var(--color-${tone})`,
               background: `var(--color-${tone}-soft)`,
             }}
           >
-            <Icon size={16} color={`var(--color-${tone})`} aria-hidden />
+            <Icon size={14} color={`var(--color-${tone})`} aria-hidden />
           </div>
         </HoverEdge>
       ))}
@@ -151,12 +146,14 @@ export function Servicos() {
         })}
       </div>
 
-      <Modal open={open} onClose={() => setOpen(false)} title={selected?.title}>
+      <Modal
+        open={open}
+        onClose={() => setOpen(false)}
+        title={selected?.title}
+        headerExtra={selected && <ServiceIconRow items={selected.items} />}
+      >
         {selected && (
           <>
-            <div style={{ display: "flex", marginBottom: "var(--space-3)" }}>
-              <ServiceModalBento items={selected.items} />
-            </div>
             <p className="ms-text-sm ms-text-muted" style={{ marginBottom: "var(--space-4)" }}>
               {selected.description}
             </p>
