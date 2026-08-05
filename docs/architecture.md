@@ -88,4 +88,5 @@ type SectionId = "home" | "servicos" | "sobre" | "contato";
 | 4 | Dependência git presa a tag (`#v1.3.0`), não à branch `main` | mothership-ds está em desenvolvimento ativo em paralelo — seguir `main` quebraria o projeto sem aviso a cada novo commit lá | 2026-08-05 |
 | 5 | Navbar do projeto é local (não usa `<Navbar>` do mothership-ds), reaproveitando as classes `.ms-navbar*` | O `<Navbar>` da lib espera links reais (`href`) com scroll-spy; aqui a navegação é por estado/clique, sem URLs (decisão #1) | 2026-08-05 |
 | 6 | Transição de fade só com CSS (`@keyframes` + estado do React), sem framer-motion/motion | É um fade sequencial simples (sai → monta a nova → entra) com um leve deslocamento vertical — não precisa de gestos, layout compartilhado (`layoutId`) nem spring physics que justifiquem trazer uma lib nova só pra isso; `useSectionTransition` (`src/lib/`) orquestra sai/monta/entra com dois `setTimeout` casados às durações do CSS | 2026-08-05 |
-| 7 | [preencher conforme o projeto evoluir] | | |
+| 7 | Serviços empilha no mobile (não vira carrossel) | Só 3 itens curtos (ícone + título + 1–2 linhas) — um `Carousel` seria mecanismo demais pra tão pouco conteúdo; empilhado cabe sem scroll até em viewports baixas (testado 360×740 e 1366×600) | 2026-08-05 |
+| 8 | [preencher conforme o projeto evoluir] | | |

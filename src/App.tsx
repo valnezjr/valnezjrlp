@@ -12,7 +12,7 @@ import { Contato } from "@/sections/Contato";
 // Navegação por estado, sem react-router — decisão registrada em
 // docs/architecture.md §3 (página única, sem SSR, sem URLs a
 // preservar).
-const SECTION_COMPONENTS: Record<SectionId, ComponentType> = {
+const SECTION_COMPONENTS: Record<SectionId, ComponentType<{ onNavigate: (section: SectionId) => void }>> = {
   home: Home,
   servicos: Servicos,
   sobre: Sobre,
@@ -68,7 +68,7 @@ function App() {
             phase === "entering" && "section-entering",
           )}
         >
-          <ActiveSection />
+          <ActiveSection onNavigate={navigate} />
         </main>
       </div>
     </ThemeProvider>
