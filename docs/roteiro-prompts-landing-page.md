@@ -180,7 +180,14 @@ de decisões e o styleguide publicado em valnezjr.github.io/mothership-ds/).
 
 ## Extras (opcionais, para depois do essencial pronto)
 
-- **Deploy:** `Configure o projeto para deploy na Vercel/Netlify e me diga o passo a passo para publicar.`
+- ~~**Deploy:** `Configure o projeto para deploy na Vercel/Netlify e me diga o passo a passo para publicar.`~~
+  Feito diferente do sugerido: preview de desenvolvimento no GitHub Pages
+  (`valnezjr.github.io/valnezjrlp/`, deploy automático a cada push em
+  `main` via `.github/workflows/pages.yml`) — não é a hospedagem final,
+  só onde acompanhar o progresso enquanto o site evolui. Decisão
+  registrada em `architecture.md` § Registro de decisões. Vercel/
+  Netlify/domínio próprio continuam opção pra quando decidir o destino
+  definitivo.
 - **Indicador de navegação:** `Adicione dots/indicador discreto na lateral ou rodapé mostrando qual das 4 seções está ativa, clicáveis.`
 - **Navegação por roda do mouse:** `Adicione troca de seção via scroll do mouse (com debounce para trocar apenas uma seção por gesto), mantendo o fade.`
 - **SEO/Open Graph:** `Adicione meta tags Open Graph e favicon para compartilhamento em redes sociais.`

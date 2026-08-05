@@ -1,32 +1,22 @@
-# React + TypeScript + Vite
+# valnezjr — landing page pessoal
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Landing page de serviços, sem scroll, 100% da viewport, navbar flutuante como header e seções que funcionam como "páginas" trocadas com fade sob o header. React + Vite + TypeScript + Tailwind CSS (só layout) + [mothership-ds](https://github.com/valnezjr/mothership-ds) (biblioteca de componentes padrão).
 
-Currently, two official plugins are available:
+**Preview de desenvolvimento:** [valnezjr.github.io/valnezjrlp](https://valnezjr.github.io/valnezjrlp/) — atualiza a cada push em `main`. Não é a hospedagem final, só onde acompanhar o progresso.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Documentos do projeto
 
-## React Compiler
+- [`CLAUDE.md`](docs/CLAUDE.md) — regras de arquitetura e convenções.
+- [`docs/prd.md`](docs/prd.md) — objetivo, conteúdo de cada seção, critérios de aceite.
+- [`docs/architecture.md`](docs/architecture.md) — stack, estrutura de pastas, registro de decisões.
+- [`docs/roteiro-prompts-landing-page.md`](docs/roteiro-prompts-landing-page.md) — roteiro de desenvolvimento passo a passo.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Desenvolvimento
 
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+npm install
+npm run dev       # servidor local
+npm run build     # build de produção (tsc -b && vite build)
+npm run lint       # oxlint
+npm run preview   # serve o build de dist/ localmente
 ```
-
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
