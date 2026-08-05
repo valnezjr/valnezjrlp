@@ -14,11 +14,13 @@ import type { SectionId } from "@/lib/navigation";
 // LogoMark não tem uso isolado fora do Splash por design — as partes
 // nascem fora de posição, esperando essa montagem (mothership-ds
 // styleguide, story "Splash"). Presente em toda largura, não só ≥1024px
-// (feedback direto: sumia por completo no mobile) — menor e acima do
-// Hero em telas estreitas (`order-first` na coluna, `flex-col`),
-// crescendo e indo pro lado a partir de lg (`lg:order-none` volta à
-// ordem do DOM — Hero primeiro — que em `lg:flex-row` põe a logo à
-// direita).
+// (feedback direto: sumia por completo no mobile) — acima do Hero em
+// telas estreitas (`order-first` na coluna, `flex-col`), crescendo e
+// indo pro lado a partir de lg (`lg:order-none` volta à ordem do DOM —
+// Hero primeiro — que em `lg:flex-row` põe a logo à direita). Tamanho
+// mobile (`h-44`/`sm:h-56`) veio de um segundo round de feedback: a
+// primeira correção (`h-28`/`sm:h-36`) ainda ficava pequena demais pra
+// reconhecer o desenho.
 //
 // style={{ background: "none" }} no Splash: .ms-splash sempre pinta o
 // próprio --bg-base/--bg-page por baixo (faz sentido em tela cheia,
@@ -66,7 +68,7 @@ export function Home({ onNavigate }: { onNavigate: (section: SectionId) => void 
             }
           />
         </div>
-        <div className="relative order-first h-28 w-28 shrink-0 sm:h-36 sm:w-36 lg:order-none lg:h-96 lg:w-96">
+        <div className="relative order-first h-44 w-44 shrink-0 sm:h-56 sm:w-56 lg:order-none lg:h-96 lg:w-96">
           <Splash inline persistent ready instant={skipIntro} style={{ background: "none" }} />
         </div>
       </div>
