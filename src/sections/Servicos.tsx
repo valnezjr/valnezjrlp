@@ -1,35 +1,104 @@
 import { useState } from "react";
-import { MonitorSmartphone, Palette, Printer } from "lucide-react";
-import { Badge, Card, CardText, HoverEdge, Modal } from "mothership-ds";
+import {
+  Component,
+  LayoutGrid,
+  Layers,
+  MonitorSmartphone,
+  Newspaper,
+  Package,
+  Palette,
+  Printer,
+  Sparkles,
+} from "lucide-react";
+import { Badge, Card, CardText, HoverEdge, Modal, type Tone } from "mothership-ds";
 import { SectionShell } from "@/components/SectionShell";
 
+interface ServiceItem {
+  label: string;
+  // Mesmo tipo gerado pra qualquer ícone lucide-react — não é exportado
+  // por nome (LucideIcon) no pacote, então deriva de um ícone real.
+  icon: typeof Palette;
+  tone: Tone;
+}
+
 // docs/prd.md §5.2. Reorganizado de 3 serviços soltos pra 3 categorias
-// com subitens — cada card abre um Modal com a descrição completa e os
-// subitens (Badge), em vez de listar tudo direto no card.
+// com subitens — cada card abre um Modal com a descrição completa e um
+// mini bento grid decorativo (um ícone por subitem, cor do sistema
+// rotacionada, estética "neoglass" das badges de estado/status).
 const SERVICE_CATEGORIES = [
   {
     icon: MonitorSmartphone,
     title: "Digital Design",
     description:
       "Produtos digitais pensados de ponta a ponta — da interface ao sistema que sustenta tudo.",
-    items: ["UI/UX Design", "Product Design", "Design System"],
+    items: [
+      { label: "UI/UX Design", icon: LayoutGrid, tone: "accent" },
+      { label: "Product Design", icon: Layers, tone: "violet" },
+      { label: "Design System", icon: Component, tone: "pink" },
+    ] satisfies ServiceItem[],
   },
   {
     icon: Palette,
     title: "Brand Design",
     description:
       "Identidade visual completa, do conceito à aplicação em cada ponto de contato da marca.",
-    items: ["Branding", "Identidade Visual"],
+    items: [
+      { label: "Branding", icon: Palette, tone: "highlight" },
+      { label: "Identidade Visual", icon: Sparkles, tone: "success" },
+    ] satisfies ServiceItem[],
   },
   {
     icon: Printer,
     title: "Print",
     description: "Peças físicas com o mesmo cuidado do digital, prontas pra produção.",
-    items: ["Design de Embalagem", "Peças Gráficas"],
+    items: [
+      { label: "Design de Embalagem", icon: Package, tone: "orange" },
+      { label: "Peças Gráficas", icon: Newspaper, tone: "accent" },
+    ] satisfies ServiceItem[],
   },
 ] as const;
 
 type ServiceCategory = (typeof SERVICE_CATEGORIES)[number];
+
+/** Mini bento decorativo do topo do Modal — um ícone por subitem, cor do
+ * sistema por tile, mesmo par vidro-fosco + borda tonal das badges de
+ * estado (`.ms-badge--{tone}`), com o hover reativo padrão (HoverEdge). */
+function ServiceModalBento({ items }: { items: readonly ServiceItem[] }) {
+  return (
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(2, 36px)",
+        gap: "var(--space-2)",
+        marginLeft: "auto",
+      }}
+    >
+      {items.map(({ icon: Icon, tone }, i) => (
+        <HoverEdge
+          key={i}
+          radius="8px"
+          scale={1.08}
+          colors={[`var(--color-${tone})`, `var(--color-${tone})`]}
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: 36,
+              height: 36,
+              borderRadius: 8,
+              border: `1px solid var(--color-${tone})`,
+              background: `var(--color-${tone}-soft)`,
+            }}
+          >
+            <Icon size={16} color={`var(--color-${tone})`} aria-hidden />
+          </div>
+        </HoverEdge>
+      ))}
+    </div>
+  );
+}
 
 export function Servicos() {
   const [open, setOpen] = useState(false);
@@ -85,13 +154,16 @@ export function Servicos() {
       <Modal open={open} onClose={() => setOpen(false)} title={selected?.title}>
         {selected && (
           <>
+            <div style={{ display: "flex", marginBottom: "var(--space-3)" }}>
+              <ServiceModalBento items={selected.items} />
+            </div>
             <p className="ms-text-sm ms-text-muted" style={{ marginBottom: "var(--space-4)" }}>
               {selected.description}
             </p>
             <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--space-2)" }}>
-              {selected.items.map((item) => (
-                <Badge key={item} tone="accent">
-                  {item}
+              {selected.items.map(({ label }) => (
+                <Badge key={label} tone="accent">
+                  {label}
                 </Badge>
               ))}
             </div>
