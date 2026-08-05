@@ -14,6 +14,13 @@ import type { SectionId } from "@/lib/navigation";
 // nascem fora de posição, esperando essa montagem (mothership-ds
 // styleguide, story "Splash"). Só a partir de lg (1024px): abaixo disso
 // a dupla coluna não cabe sem apertar o texto ou criar scroll.
+//
+// style={{ background: "none" }} no Splash: .ms-splash sempre pinta o
+// próprio --bg-base/--bg-page por baixo (faz sentido em tela cheia,
+// onde precisa cobrir a página) — aqui, flutuando ao lado do Hero, isso
+// criava uma segunda instância do fundo dentro de uma caixa visível.
+// Sem background próprio, só o LogoMark (SVG sem fundo) fica por cima
+// do LivingBackground real da página, sem emenda.
 export function Home({ onNavigate }: { onNavigate: (section: SectionId) => void }) {
   return (
     <SectionShell>
@@ -38,11 +45,8 @@ export function Home({ onNavigate }: { onNavigate: (section: SectionId) => void 
             }
           />
         </div>
-        <div
-          className="relative hidden h-64 w-64 shrink-0 overflow-hidden lg:block"
-          style={{ border: "1px solid var(--color-border)", borderRadius: "var(--radius-md)" }}
-        >
-          <Splash inline persistent ready />
+        <div className="relative hidden h-96 w-96 shrink-0 lg:block">
+          <Splash inline persistent ready style={{ background: "none" }} />
         </div>
       </div>
     </SectionShell>
