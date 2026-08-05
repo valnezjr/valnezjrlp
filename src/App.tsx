@@ -1,6 +1,9 @@
-import { useState, type ComponentType } from "react";
+import { useEffect, useState, type ComponentType } from "react";
+import { ThemeProvider } from "mothership-ds";
 import { Navbar } from "@/components/Navbar";
-import type { SectionId } from "@/lib/navigation";
+import { SECTIONS, type SectionId } from "@/lib/navigation";
+import { useSectionTransition } from "@/lib/useSectionTransition";
+import { cn } from "@/lib/utils";
 import { Home } from "@/sections/Home";
 import { Servicos } from "@/sections/Servicos";
 import { Sobre } from "@/sections/Sobre";
@@ -8,7 +11,7 @@ import { Contato } from "@/sections/Contato";
 
 // Navegação por estado, sem react-router — decisão registrada em
 // docs/architecture.md §3 (página única, sem SSR, sem URLs a
-// preservar). A transição de fade entra na Etapa 3.
+// preservar).
 const SECTION_COMPONENTS: Record<SectionId, ComponentType> = {
   home: Home,
   servicos: Servicos,
@@ -16,17 +19,59 @@ const SECTION_COMPONENTS: Record<SectionId, ComponentType> = {
   contato: Contato,
 };
 
+const FOCUSABLE_INPUT_TAGS = new Set(["INPUT", "TEXTAREA", "SELECT"]);
+
 function App() {
   const [active, setActive] = useState<SectionId>("home");
-  const ActiveSection = SECTION_COMPONENTS[active];
+  const { displayed, isTransitioning, phase } = useSectionTransition(active);
+  const ActiveSection = SECTION_COMPONENTS[displayed];
+
+  function navigate(section: SectionId) {
+    if (isTransitioning) return;
+    setActive(section);
+  }
+
+  // Setas esquerda/direita navegam entre seções, na ordem da navbar
+  // (architecture.md §5) — exceto com foco num campo de formulário,
+  // onde a seta precisa mover o cursor de texto, não trocar de seção.
+  useEffect(() => {
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+      if (isTransitioning) return;
+
+      const target = document.activeElement;
+      if (
+        target instanceof HTMLElement &&
+        (FOCUSABLE_INPUT_TAGS.has(target.tagName) || target.isContentEditable)
+      ) {
+        return;
+      }
+
+      const currentIndex = SECTIONS.findIndex((s) => s.id === active);
+      const direction = e.key === "ArrowRight" ? 1 : -1;
+      const nextIndex = (currentIndex + direction + SECTIONS.length) % SECTIONS.length;
+      setActive(SECTIONS[nextIndex].id);
+    }
+
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [active, isTransitioning]);
 
   return (
-    <div className="flex h-full w-full flex-col overflow-hidden">
-      <Navbar active={active} onNavigate={setActive} />
-      <main className="flex-1 overflow-hidden">
-        <ActiveSection />
-      </main>
-    </div>
+    <ThemeProvider>
+      <div className="flex h-full w-full flex-col overflow-hidden">
+        <Navbar active={active} onNavigate={navigate} />
+        <main
+          className={cn(
+            "flex-1 overflow-hidden",
+            phase === "leaving" && "section-leaving",
+            phase === "entering" && "section-entering",
+          )}
+        >
+          <ActiveSection />
+        </main>
+      </div>
+    </ThemeProvider>
   );
 }
 

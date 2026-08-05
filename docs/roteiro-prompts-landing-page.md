@@ -1,4 +1,12 @@
-# Roteiro de Prompts — Landing Page (React + Vite + shadcn/ui)
+# Roteiro de Prompts — Landing Page (React + Vite + mothership-ds)
+
+> **Nota (pós-Etapa 2):** o projeto começou com shadcn/ui como biblioteca de
+> componentes (Etapas 1–2 originais). Decisão revista depois: **mothership-ds**
+> (github.com/valnezjr/mothership-ds, biblioteca própria do autor) virou a
+> biblioteca padrão do projeto **de agora em diante**, substituindo shadcn/ui
+> por completo — ver `docs/architecture.md` § Registro de decisões. As etapas
+> abaixo já refletem essa troca; se você reler commits antigos, vai ver
+> shadcn/ui neles — é esperado.
 
 Landing page de serviços, sem scroll, 100% da viewport, navbar flutuante como header e seções que funcionam como "páginas" trocadas com fade sob o header.
 
@@ -31,12 +39,11 @@ Leia CLAUDE.md, docs/prd.md e docs/architecture.md. Resuma em poucas linhas as r
 ```
 Crie um novo projeto React com Vite e TypeScript neste diretório. Configure:
 
-1. Tailwind CSS integrado ao Vite.
-2. shadcn/ui inicializado (tema padrão neutral, CSS variables habilitadas).
-3. Adicione desde já os componentes shadcn: button, card, input, textarea, label, sheet, badge, separator.
-4. Estrutura de pastas: src/sections/ (vazia por enquanto), src/components/, src/lib/, e docs/ na raiz (vazia — vou colocar os documentos do projeto nela).
-5. Limpe o boilerplate do Vite (logos, CSS de exemplo, contador).
-6. No CSS global: html, body e #root com height 100%, overflow hidden, e nenhuma margem — a aplicação nunca deve ter scroll.
+1. Tailwind CSS integrado ao Vite (só pra layout/posicionamento — cor e tipografia vêm do mothership-ds, nunca de tokens Tailwind).
+2. mothership-ds como dependência: `"mothership-ds": "github:valnezjr/mothership-ds#<tag>"` no package.json — presa a uma tag, não à branch `main`. Importe `mothership-ds/styles.css` uma vez no `main.tsx`, e aplique a classe `ms-page` no `#root` (`index.html`) pra herdar cor/fonte/foco do design system.
+3. Estrutura de pastas: src/sections/ (vazia por enquanto), src/components/, src/lib/, e docs/ na raiz (vazia — vou colocar os documentos do projeto nela).
+4. Limpe o boilerplate do Vite (logos, CSS de exemplo, contador).
+5. No CSS global: html, body e #root com height 100%, overflow hidden, e nenhuma margem — a aplicação nunca deve ter scroll. Cuidado com `.ms-page`'s `min-height: 100vh` competindo com isso no mobile (ver `index.css` atual pra receita).
 
 Rode o dev server ao final e confirme que compila sem erros.
 ```
@@ -87,7 +94,7 @@ Implemente a seção Home (hero), substituindo o placeholder, conforme a seção
 
 - Os CTAs navegam usando a navegação por estado existente (primário → Contato, secundário → Serviços).
 - A seção inteira cabe na viewport sem scroll em qualquer tamanho de tela; no mobile o visual de apoio pode sumir ou ir para o fundo.
-- Usar Button do shadcn para os CTAs; hierarquia tipográfica forte (título grande, subtítulo em muted-foreground).
+- Usar Button do mothership-ds para os CTAs; hierarquia tipográfica forte (`.ms-h1`/`.ms-h2` no título, `.ms-text-muted` no subtítulo).
 ```
 
 ---
@@ -97,9 +104,9 @@ Implemente a seção Home (hero), substituindo o placeholder, conforme a seção
 ```
 Implemente a seção Serviços, substituindo o placeholder, conforme a seção 5.2 do docs/prd.md.
 
-- Grid de cards (shadcn Card), um por serviço, com os ícones do lucide-react indicados no PRD.
+- Grid de cards (Card do mothership-ds), um por serviço, com os ícones do lucide-react indicados no PRD.
 - Hover sutil nos cards (elevação/borda).
-- No desktop: grid. No tablet: 2 colunas. No mobile: como a página não pode ter scroll, os cards viram um carrossel horizontal (shadcn/embla) ou empilham em versão compacta — escolha o que couber melhor na viewport, explique a escolha e registre-a no docs/architecture.md.
+- No desktop: grid. No tablet: 2 colunas. No mobile: como a página não pode ter scroll, os cards viram um carrossel horizontal (Carousel do mothership-ds) ou empilham em versão compacta — escolha o que couber melhor na viewport, explique a escolha e registre-a no docs/architecture.md.
 
 Tudo precisa caber em 100% da viewport, sem scroll, inclusive no mobile.
 ```
@@ -111,8 +118,8 @@ Tudo precisa caber em 100% da viewport, sem scroll, inclusive no mobile.
 ```
 Implemente a seção Sobre/Portfólio, substituindo o placeholder, conforme a seção 5.3 do docs/prd.md.
 
-- Lado esquerdo (Sobre): foto/avatar, parágrafo de apresentação e Badges (shadcn) com as competências do PRD.
-- Lado direito (Portfólio): projetos em miniatura (imagem/placeholder + nome + uma linha); clique abre um Dialog (shadcn) com os detalhes do PRD — assim o portfólio ganha profundidade sem quebrar a regra de não ter scroll na página.
+- Lado esquerdo (Sobre): Avatar e Badges do mothership-ds pras competências do PRD, parágrafo de apresentação.
+- Lado direito (Portfólio): projetos em miniatura (imagem/placeholder + nome + uma linha); clique abre um Modal do mothership-ds com os detalhes do PRD — assim o portfólio ganha profundidade sem quebrar a regra de não ter scroll na página.
 
 No mobile: empilhar com o portfólio como carrossel horizontal compacto. Sempre cabendo na viewport.
 ```
@@ -124,7 +131,7 @@ No mobile: empilhar com o portfólio como carrossel horizontal compacto. Sempre 
 ```
 Implemente a seção Contato, substituindo o placeholder, conforme a seção 5.4 do docs/prd.md.
 
-- Formulário (shadcn Input, Textarea, Label, Button): nome, e-mail, mensagem.
+- Formulário (Field/Input/Textarea/Button do mothership-ds): nome, e-mail, mensagem.
   - Validação client-side simples (campos obrigatórios, formato de e-mail).
   - Por enquanto sem backend: ao enviar, mostrar estado de sucesso (ícone + mensagem) e limpar o formulário. A função de envio fica isolada em lib/sendContact.ts, conforme o docs/architecture.md, para eu plugar o serviço real depois.
 - Ao lado do formulário, os contatos diretos listados no PRD, com ícones do lucide-react.
@@ -140,7 +147,7 @@ Formulário compacto o suficiente para caber na viewport com teclado fechado no 
 Faça uma revisão completa da aplicação:
 
 1. Teste os breakpoints 360px, 768px, 1024px, 1440px e 1920px de largura, e também altura baixa (ex.: 1366x600, notebook com navegador com barras). Nenhuma combinação pode gerar scroll nem conteúdo cortado/escondido atrás da navbar.
-2. No mobile, a navbar deve virar um menu: logo + botão hamburguer que abre um Sheet (shadcn) com os links das seções.
+2. No mobile, a navbar deve virar um menu: logo + botão hamburguer que abre um Drawer do mothership-ds com os links das seções.
 3. Acessibilidade: navegação por Tab funcionando em ordem lógica, foco visível, aria-current na seção ativa da navbar, textos alternativos, contraste adequado.
 4. Título da aba e meta description apropriados; lang="pt-BR" no html.
 5. Rode o build de produção (npm run build) e corrija qualquer erro ou warning.
@@ -151,20 +158,23 @@ Liste tudo o que encontrou e corrigiu.
 
 ---
 
-## Etapa 9 — Aplicar o styleguide (quando você tiver o material)
+## Etapa 9 — Styleguide (superada — mothership-ds já é o styleguide)
 
-> Guarde esta etapa para quando o styleguide estiver pronto. Como as etapas anteriores proibiram cores hardcoded, aqui basta trocar o tema.
+> Escopo original: "aplicar o styleguide depois, só via tema". Ficou obsoleto
+> quando o mothership-ds virou a biblioteca de componentes em si (não só uma
+> fonte de tokens) — o styleguide já está aplicado desde a integração, não é
+> mais um passo futuro. O que sobra desta etapa, pra quando fizer sentido:
 
 ```
-Vou te passar o styleguide do projeto. Aplique-o SOMENTE via tema (CSS variables do shadcn em index.css e configuração do Tailwind), sem alterar a estrutura dos componentes:
-
-- Cores: [primária, secundária, fundo, texto — cole os valores]
-- Tipografia: [fontes para títulos e corpo — indicar se são do Google Fonts]
-- Raio de borda / estilo geral: [ex.: cantos mais retos, mais arredondados]
-- Logo: [anexe o arquivo] — substituir o texto da navbar.
-
-Depois de aplicar, verifique o contraste texto/fundo em todas as seções e me mostre um resumo do que mudou.
+Puxe a versão mais nova do mothership-ds: atualize a tag em "mothership-ds" no
+package.json (github:valnezjr/mothership-ds#<tag nova>) e rode npm install.
+Depois disso, revise se algum componente novo da lib substitui algo que hoje
+está implementado à mão no projeto (conferir docs/architecture.md § Registro
+de decisões e o styleguide publicado em valnezjr.github.io/mothership-ds/).
 ```
+
+- **Logo:** trocar o texto "valnezjr" da navbar (`Navbar.tsx`, dentro de `.ms-navbar__brand`) por um arquivo de logo, quando houver um pronto.
+- **Ajuste de tema pontual** (se algum dia quiser divergir do tema padrão do mothership-ds só pra este projeto): editar as variáveis em `node_modules/mothership-ds/src/styles/tokens.css` não é opção (fica em `node_modules`, some no próximo `npm install`) — a rota certa seria um override CSS local depois dos imports em `index.css`, redeclarando só as `--color-*`/`--font-family` que quiser mudar. Ainda não foi necessário.
 
 ---
 

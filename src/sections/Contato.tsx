@@ -4,7 +4,7 @@ import { SectionShell } from "@/components/SectionShell";
 export function Contato() {
   return (
     <SectionShell>
-      <h1 className="text-2xl font-semibold">Contato</h1>
+      <h1 className="ms-h1">Contato</h1>
     </SectionShell>
   );
 }

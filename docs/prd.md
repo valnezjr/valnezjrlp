@@ -6,18 +6,18 @@
 
 ## 1. Objetivo
 
-Divulgar os serviços de [seu nome / sua marca] e converter visitantes em contato direto (formulário ou WhatsApp).
+Divulgar os serviços de Valnez Júnior, Designer Engineer, e converter visitantes em contato direto (formulário ou WhatsApp).
 
 **Métrica de sucesso:** visitante entende o que ofereço em menos de 10 segundos e tem no máximo 2 cliques até me contatar.
 
 ## 2. Público-alvo
 
-- [quem contrata você — ex.: pequenos negócios locais que precisam de presença digital]
-- [segundo perfil, se houver — ex.: startups que precisam de MVP]
+- Negócios locais da região, contratando como profissional independente.
+- Empresas de pequeno/médio porte de tecnologia, contratando como prestador de serviço terceirizado.
 
 ## 3. Proposta de valor
 
-[Uma frase: por que contratar você e não outro? Ex.: "Entrego sites rápidos e bonitos em semanas, não meses, com comunicação direta e sem intermediários."]
+"Do componente ao sistema, dos tokens à identidade visual finalizada — projeto completo, acessível e de qualidade para a sua marca."
 
 ## 4. Requisitos de produto
 
@@ -31,34 +31,34 @@ Divulgar os serviços de [seu nome / sua marca] e converter visitantes em contat
 ## 5. Conteúdo por seção
 
 ### 5.1 Home / Hero
-- **Título:** [ex.: "Sites e sistemas que fazem seu negócio crescer"]
-- **Subtítulo:** [1–2 linhas: o que você faz e para quem]
-- **CTA primário:** "[Fale comigo]" → seção Contato
-- **CTA secundário:** "[Ver serviços]" → seção Serviços
-- **Visual de apoio:** [descreva, ou "placeholder abstrato em CSS/SVG"]
+- **Título:** "Do componente ao sistema, da marca ao produto."
+- **Subtítulo:** Valnez Júnior, Designer Engineer — projetos completos, acessíveis e com identidade, para negócios locais e empresas de tecnologia.
+- **CTA primário:** "Fale comigo" → seção Contato
+- **CTA secundário:** "Ver serviços" → seção Serviços
+- **Visual de apoio:** placeholder abstrato em CSS/SVG (nada definido ainda)
+
+> Título/subtítulo acima são rascunho de copy, derivados da proposta de valor (§3) — ajuste à vontade antes da Etapa 4.
 
 ### 5.2 Serviços
-- **Título da seção:** [ex.: "O que eu faço"]
+- **Título da seção:** "O que eu faço"
 - **Serviços:**
   | Serviço | Descrição (1–2 linhas) | Ícone (lucide) |
   |---|---|---|
-  | [Serviço 1] | [descrição] | [ex.: globe] |
-  | [Serviço 2] | [descrição] | [ex.: smartphone] |
-  | [Serviço 3] | [descrição] | [ex.: rocket] |
+  | Brand Design | Identidade visual completa, do conceito à aplicação — sua marca com consistência em cada ponto de contato. | `palette` |
+  | UI/UX Design | Interfaces desenhadas com foco em quem usa: experiência clara, acessível e alinhada ao seu produto. | `pen-tool` |
+  | Product Design | Do conceito ao produto funcional, ponta a ponta — cuidando de cada etapa do processo. | `rocket` |
+
+> Descrições acima são rascunho de copy a partir do que você passou ("Brand Design, UI/UX Design, Product Design — faço tudo de ponta a ponta, do conceito ao produto funcional"); ícones são sugestão minha. Revise antes da Etapa 5.
 
 ### 5.3 Sobre / Portfólio
-- **Apresentação:** [parágrafo curto: quem você é, experiência, diferencial]
-- **Competências (badges):** [React, Node, UX, ...]
-- **Projetos (3–4):**
-  | Projeto | Uma linha | Detalhe (abre no dialog) |
-  |---|---|---|
-  | [Projeto 1] | [resumo] | [contexto, resultado, link se houver] |
-  | [Projeto 2] | [resumo] | [...] |
+- **Apresentação:** _[PENDENTE — Valnez ainda está organizando esse conteúdo, revisitar este tópico antes da Etapa 6]_
+- **Competências (badges):** _[PENDENTE]_
+- **Projetos (3–4):** _[PENDENTE — inclui decidir se o portfólio fica nesta tabela estática ou é buscado dinamicamente do GitHub (`Sobre.tsx` já tem uma nota nesse sentido); se for GitHub, falta o username e o critério de filtro]_
 
 ### 5.4 Contato
-- **Título:** [ex.: "Vamos conversar?"]
+- **Título:** "Vamos conversar?"
 - **Formulário:** nome, e-mail, mensagem (todos obrigatórios).
-- **Contatos diretos:** [WhatsApp wa.me/55..., e-mail, LinkedIn, Instagram]
+- **Contatos diretos:** WhatsApp [wa.me/5584996324823](https://wa.me/5584996324823) (+55 84 99632-4823), e-mail valn3zjr@gmail.com. LinkedIn/Instagram: não informado — adicionar depois se quiser expor.
 
 ## 6. Fora de escopo (v1)
 

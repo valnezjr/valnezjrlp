@@ -11,7 +11,7 @@ Este projeto é uma landing page one-page para divulgação de serviços.
 
 ## Regras de arquitetura
 
-- Stack: React 18 + Vite + TypeScript + Tailwind CSS + shadcn/ui.
+- Stack: React 18 + Vite + TypeScript + Tailwind CSS (só layout) + **mothership-ds** (biblioteca de componentes padrão do projeto, github.com/valnezjr/mothership-ds).
 - A página NUNCA tem scroll: o layout ocupa exatamente 100dvh x 100dvw, com overflow hidden no body.
 - A navegação é feita por estado (sem react-router): uma seção ativa por vez, renderizada sob a navbar.
 - Seções existentes: Home (hero), Serviços, Sobre/Portfólio, Contato.
@@ -21,9 +21,11 @@ Este projeto é uma landing page one-page para divulgação de serviços.
 ## Convenções
 
 - Componentes de seção em src/sections/, um arquivo por seção.
-- Componentes reutilizáveis em src/components/ (componentes gerados do shadcn em src/components/ui/).
-- Usar componentes do shadcn/ui sempre que existir equivalente (Button, Card, Input, etc.).
-- Cores e tipografia: usar os tokens padrão do shadcn por enquanto — um styleguide será fornecido depois e aplicado via CSS variables do tema. NÃO hardcodar cores hex nos componentes; usar sempre as classes semânticas do tema (bg-background, text-foreground, text-muted-foreground, bg-primary, etc.).
+- Componentes reutilizáveis do projeto em src/components/ (Navbar, SectionShell — não há mais pasta ui/ gerada; o catálogo de componentes vem do mothership-ds).
+- **mothership-ds é a biblioteca de componentes padrão**: usar os componentes exportados por ele (Button, Card, Field/Input/Textarea, Badge, Modal, etc. — catálogo completo no styleguide publicado, https://valnezjr.github.io/mothership-ds/, ou lendo `node_modules/mothership-ds/src/index.ts` pros exports e `src/components/*.tsx` pras props; o `package.json` só inclui `src/`, não `docs/`) sempre que existir equivalente, em vez de reimplementar. Instalado como dependência git presa a uma tag (`package.json`); atualizar a tag manualmente para puxar componentes novos, não seguir `main` (a lib está em desenvolvimento ativo em paralelo).
+  - Componentes sem equivalente direto no mothership-ds (ex.: esta própria `Navbar`, que precisa de navegação por estado/clique em vez de `href`+scroll-spy) são construídos localmente reaproveitando as classes CSS públicas da lib (`.ms-navbar`, `.ms-navbar__link`, etc.) em vez de duplicar o visual com Tailwind.
+  - `.ms-page` no `#root` (ver `index.html`) é o que liga toda a herança de cor/fonte/foco do mothership-ds — não remover.
+- Cores e tipografia: **só** os tokens do mothership-ds (`var(--color-*)`, `.ms-h1`/`.ms-h2`/`.ms-h3`/`.ms-text-sm`/`.ms-text-muted` etc., herdados via `.ms-page`). Tailwind fica reservado pra layout/posicionamento (flex, grid, espaçamento) — NUNCA pra cor ou tipografia. Nenhuma cor hex hardcoded em componente.
 - Textos das seções vêm do docs/prd.md (seção 5). Não inventar conteúdo: se um campo estiver em [colchetes] no PRD, avisar o usuário em vez de improvisar.
 - Todo texto visível ao usuário em português (pt-BR).
 - Mobile-first: tudo deve funcionar de 360px a 1920px de largura, incluindo alturas baixas (~600px úteis).

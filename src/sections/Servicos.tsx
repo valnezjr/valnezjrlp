@@ -4,7 +4,7 @@ import { SectionShell } from "@/components/SectionShell";
 export function Servicos() {
   return (
     <SectionShell>
-      <h1 className="text-2xl font-semibold">Serviços</h1>
+      <h1 className="ms-h1">Serviços</h1>
     </SectionShell>
   );
 }

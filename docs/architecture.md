@@ -6,20 +6,22 @@
 ## 1. Stack
 
 - **React 18 + Vite + TypeScript** — SPA simples, sem SSR (não há necessidade de SEO multi-página numa landing one-page).
-- **Tailwind CSS + shadcn/ui** — componentes copiados para o repo (não é dependência de runtime), tema via CSS variables.
-- **lucide-react** — ícones.
+- **mothership-ds** — biblioteca de componentes padrão do projeto (github.com/valnezjr/mothership-ds, do próprio autor). Instalada como dependência git presa a uma tag (`"mothership-ds": "github:valnezjr/mothership-ds#v1.3.0"`), não à branch `main` — a lib está em desenvolvimento ativo em paralelo, então a versão só avança quando alguém bumpar a tag de propósito. Não publicada no npm; sem build próprio (`main`/`types` apontam pro `.tsx` fonte direto), o Vite transforma normalmente via esbuild, sem config extra.
+- **Tailwind CSS** — só layout/posicionamento (flex, grid, espaçamento). Cor e tipografia são proibidas aqui: vêm inteiramente do mothership-ds (`var(--color-*)`, `.ms-h1`/`.ms-text-sm`/etc.), herdadas via `.ms-page` aplicada no `#root` (`index.html`).
+- **lucide-react** — ícones (mothership-ds não embute biblioteca de ícones, por design).
 - **motion (framer-motion)** — [ou "CSS transitions puras"] para o fade entre seções. Decisão registrada na etapa de transições.
 
 ## 2. Estrutura de pastas
 
 ```
 src/
-├── App.tsx              # Shell: estado de navegação + layout raiz
-├── index.css            # Tema (CSS variables do shadcn), reset, regra de no-scroll
-├── main.tsx
+├── App.tsx              # Shell: estado de navegação + layout raiz + <ThemeProvider>
+├── index.css            # Tailwind (só layout) + import do mothership-ds + regra de no-scroll
+├── main.tsx             # importa index.css e mothership-ds/styles.css uma única vez
 ├── components/
-│   ├── ui/              # Componentes shadcn (gerados, não editar à mão sem motivo)
-│   ├── Navbar.tsx       # Navbar flutuante (desktop) + Sheet (mobile)
+│   ├── Navbar.tsx       # Navbar flutuante (desktop) + menu mobile na Etapa 8 (Drawer do
+│   │                     mothership-ds) — reaproveita classes .ms-navbar* do mothership-ds,
+│   │                     navegação por estado (não por href)
 │   └── SectionShell.tsx # Wrapper comum: padding-top p/ navbar, fade, 100% da área útil
 ├── sections/
 │   ├── Home.tsx
@@ -27,9 +29,13 @@ src/
 │   ├── Sobre.tsx
 │   └── Contato.tsx
 └── lib/
-    ├── utils.ts         # cn() do shadcn
+    ├── navigation.ts    # SectionId, ordem canônica das seções
+    ├── utils.ts         # cn() (clsx + tailwind-merge) — só pra classes de layout do Tailwind
     └── content.ts       # [opcional] textos centralizados, espelhando o prd.md
 ```
+
+Não há mais `components/ui/` — o catálogo de componentes vem do mothership-ds
+(instalado em `node_modules/mothership-ds`), não de arquivos gerados no repo.
 
 ## 3. Navegação — decisão central
 
@@ -52,7 +58,7 @@ type SectionId = "home" | "servicos" | "sobre" | "contato";
 1. Container raiz: `100dvw` x `100dvh` (**dvh, nunca vh** — barra de endereço mobile), `overflow: hidden` em html/body/#root.
 2. Navbar: `position: fixed`, flutuante (margens, cantos arredondados, backdrop-blur), sobrepõe o conteúdo.
 3. Toda seção usa o `SectionShell`, que já aplica o padding-top compensando a navbar — seções nunca calculam isso individualmente.
-4. Se o conteúdo não cabe: adaptar o conteúdo (carrossel, dialog, corte de texto). **Nunca** criar scroll interno ou reduzir fonte abaixo do legível.
+4. Se o conteúdo não cabe: adaptar o conteúdo (carrossel, Modal, corte de texto). **Nunca** criar scroll interno ou reduzir fonte abaixo do legível.
 
 ## 5. Transições
 
@@ -60,11 +66,12 @@ type SectionId = "home" | "servicos" | "sobre" | "contato";
 - Navegação bloqueada durante a transição (evita estados intermediários quebrados).
 - `prefers-reduced-motion`: troca instantânea.
 
-## 6. Tema e styleguide (futuro)
+## 6. Tema e styleguide
 
-- Todo estilo de cor/tipografia passa pelas CSS variables do shadcn (`--background`, `--primary`, etc.) definidas em `index.css`.
-- Componentes usam **apenas** classes semânticas (`bg-background`, `text-muted-foreground`...).
-- Aplicar o styleguide futuro = editar `index.css` + config de fontes. Zero mudança em componentes. Esta é a razão da proibição de cores hardcoded no CLAUDE.md.
+- O styleguide **é** o mothership-ds — não é mais um tema aplicado depois por cima de outra biblioteca, é a própria biblioteca de componentes do projeto (decisão #3 abaixo, substitui a original de shadcn/ui + tokens semânticos).
+- Todo estilo de cor/tipografia passa pelas CSS variables do mothership-ds (`var(--color-accent)`, `var(--color-text)`, `var(--font-family)`, etc., ver `node_modules/mothership-ds/src/styles/tokens.css`), herdadas via `.ms-page` no `#root`. Tipografia usa as classes utilitárias da lib (`.ms-h1`, `.ms-h2`, `.ms-h3`, `.ms-text-sm`, `.ms-text-xs`, `.ms-text-muted`).
+- Tailwind é só pra layout (flex, grid, gap, padding, largura/altura) — nunca pra cor, fonte ou raio de borda.
+- Se um dia divergir do tema padrão do mothership-ds só pra este projeto: não editar `node_modules` (some no próximo install); redeclarar as `--color-*`/`--font-family` que quiser depois dos imports em `index.css`.
 
 ## 7. Formulário de contato
 
@@ -77,5 +84,8 @@ type SectionId = "home" | "servicos" | "sobre" | "contato";
 |---|---|---|---|
 | 1 | SPA sem router, navegação por estado | Página única, sem necessidade de URLs | [data] |
 | 2 | dvh em vez de vh | Barra de endereço mobile quebra 100vh | [data] |
-| 3 | shadcn/ui + tokens semânticos | Styleguide futuro aplicável só via tema | [data] |
-| 4 | [preencher conforme o projeto evoluir] | | |
+| 3 | mothership-ds como biblioteca de componentes padrão, substituindo shadcn/ui por completo | Biblioteca própria do autor (github.com/valnezjr/mothership-ds); "styleguide futuro" deixou de ser um tema a aplicar depois e passou a ser a própria lib de componentes, usada desde já | 2026-08-05 |
+| 4 | Dependência git presa a tag (`#v1.3.0`), não à branch `main` | mothership-ds está em desenvolvimento ativo em paralelo — seguir `main` quebraria o projeto sem aviso a cada novo commit lá | 2026-08-05 |
+| 5 | Navbar do projeto é local (não usa `<Navbar>` do mothership-ds), reaproveitando as classes `.ms-navbar*` | O `<Navbar>` da lib espera links reais (`href`) com scroll-spy; aqui a navegação é por estado/clique, sem URLs (decisão #1) | 2026-08-05 |
+| 6 | Transição de fade só com CSS (`@keyframes` + estado do React), sem framer-motion/motion | É um fade sequencial simples (sai → monta a nova → entra) com um leve deslocamento vertical — não precisa de gestos, layout compartilhado (`layoutId`) nem spring physics que justifiquem trazer uma lib nova só pra isso; `useSectionTransition` (`src/lib/`) orquestra sai/monta/entra com dois `setTimeout` casados às durações do CSS | 2026-08-05 |
+| 7 | [preencher conforme o projeto evoluir] | | |

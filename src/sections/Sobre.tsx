@@ -7,7 +7,7 @@ import { SectionShell } from "@/components/SectionShell";
 export function Sobre() {
   return (
     <SectionShell>
-      <h1 className="text-2xl font-semibold">Sobre</h1>
+      <h1 className="ms-h1">Sobre</h1>
     </SectionShell>
   );
 }
