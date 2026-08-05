@@ -6,7 +6,7 @@
 
 ## 1. Objetivo
 
-Divulgar os serviços de Valnez Júnior, Designer Engineer, e converter visitantes em contato direto (formulário ou WhatsApp).
+Divulgar os serviços de Valnez Júnior, Designer Engineer, e converter visitantes em contato direto (WhatsApp, e-mail ou Instagram).
 
 **Métrica de sucesso:** visitante entende o que ofereço em menos de 10 segundos e tem no máximo 2 cliques até me contatar.
 
@@ -26,7 +26,7 @@ Divulgar os serviços de Valnez Júnior, Designer Engineer, e converter visitant
 - Navbar flutuante sempre visível; seção ativa destacada.
 - Transição fade entre seções (400–500ms), respeitando prefers-reduced-motion.
 - Funcional de 360px a 1920px de largura, incluindo alturas baixas (~600px úteis).
-- Formulário de contato com validação client-side; envio real plugado depois via [Formspree / EmailJS / API própria].
+- Contato só por link direto (WhatsApp, e-mail, Instagram) — sem formulário; decisão de 2026-08-05, o campo de nome/e-mail/mensagem não fazia sentido pra esta seção específica.
 
 ## 5. Conteúdo por seção
 
@@ -58,8 +58,16 @@ Divulgar os serviços de Valnez Júnior, Designer Engineer, e converter visitant
 
 ### 5.4 Contato
 - **Título:** "Vamos conversar?"
-- **Formulário:** nome, e-mail, mensagem (todos obrigatórios).
-- **Contatos diretos:** WhatsApp [wa.me/5584996324823](https://wa.me/5584996324823) (+55 84 99632-4823), e-mail valn3zjr@gmail.com. LinkedIn/Instagram: não informado — adicionar depois se quiser expor.
+- **Parágrafo:** breve explicação de que o atendimento é por WhatsApp.
+- **Sem formulário** — decisão de 2026-08-05: campo de nome/e-mail/
+  mensagem removido, não fazia sentido pra esta seção (só pra ela; o
+  `Field`/`Input`/`Textarea`/`Button` da lib mothership-ds continuam
+  intactos, sem relação com essa decisão).
+- **Contatos diretos:** WhatsApp [wa.me/5584996324823](https://wa.me/5584996324823) (+55 84 99632-4823), e-mail valn3zjr@gmail.com, Instagram [@vraunez](https://instagram.com/vraunez).
+
+> Parágrafo do WhatsApp é rascunho meu — revise à vontade: "Prefiro
+> atender por WhatsApp — é o canal mais rápido pra tirar dúvidas,
+> alinhar escopo ou já começar a conversa sobre o seu projeto."
 
 ## 6. Fora de escopo (v1)
 

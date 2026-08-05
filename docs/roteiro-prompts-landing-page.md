@@ -128,6 +128,15 @@ No mobile: empilhar com o portfólio como carrossel horizontal compacto. Sempre 
 
 ## Etapa 7 — Seção Contato
 
+> **Nota (2026-08-05):** o formulário abaixo foi implementado e depois
+> removido — decisão de que campo de nome/e-mail/mensagem não fazia
+> sentido pra esta seção específica (`lib/sendContact.ts` também saiu,
+> ficou órfão). Não afeta `Field`/`Input`/`Textarea`/`Button` da lib
+> mothership-ds, que seguem disponíveis. A seção final é só a lista de
+> contatos diretos (WhatsApp, e-mail, Instagram) com um parágrafo curto
+> sobre atendimento via WhatsApp — ver `docs/prd.md` §5.4 e
+> `docs/architecture.md` § Registro de decisões #10.
+
 ```
 Implemente a seção Contato, substituindo o placeholder, conforme a seção 5.4 do docs/prd.md.
 

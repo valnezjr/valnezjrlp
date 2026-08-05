@@ -73,10 +73,15 @@ type SectionId = "home" | "servicos" | "sobre" | "contato";
 - Tailwind é só pra layout (flex, grid, gap, padding, largura/altura) — nunca pra cor, fonte ou raio de borda.
 - Se um dia divergir do tema padrão do mothership-ds só pra este projeto: não editar `node_modules` (some no próximo install); redeclarar as `--color-*`/`--font-family` que quiser depois dos imports em `index.css`.
 
-## 7. Formulário de contato
+## 7. Contato
 
-- v1: validação client-side, envio simulado com estado de sucesso.
-- A função de envio fica isolada (ex.: `lib/sendContact.ts`) para plugar [Formspree/EmailJS/API] sem tocar no componente.
+- Sem formulário — só links diretos (WhatsApp, e-mail, Instagram). Decisão de
+  2026-08-05: um campo de nome/e-mail/mensagem não fazia sentido pra esta
+  seção específica (não é uma remoção do `Field`/`Input`/`Textarea`/`Button`
+  da lib mothership-ds, que seguem disponíveis pra qualquer outro uso).
+  `lib/sendContact.ts` (a função de envio isolada da v1, pensada pra plugar
+  Formspree/EmailJS/API depois) foi removido junto — ficou órfão sem o
+  formulário que o chamava.
 
 ## 8. Registro de decisões
 
@@ -85,9 +90,11 @@ type SectionId = "home" | "servicos" | "sobre" | "contato";
 | 1 | SPA sem router, navegação por estado | Página única, sem necessidade de URLs | [data] |
 | 2 | dvh em vez de vh | Barra de endereço mobile quebra 100vh | [data] |
 | 3 | mothership-ds como biblioteca de componentes padrão, substituindo shadcn/ui por completo | Biblioteca própria do autor (github.com/valnezjr/mothership-ds); "styleguide futuro" deixou de ser um tema a aplicar depois e passou a ser a própria lib de componentes, usada desde já | 2026-08-05 |
-| 4 | Dependência git presa a tag (`#v1.3.0`), não à branch `main` | mothership-ds está em desenvolvimento ativo em paralelo — seguir `main` quebraria o projeto sem aviso a cada novo commit lá | 2026-08-05 |
+| 4 | Dependência git presa a tag (`#v1.4.0` atualmente), não à branch `main` | mothership-ds está em desenvolvimento ativo em paralelo — seguir `main` quebraria o projeto sem aviso a cada novo commit lá | 2026-08-05 |
 | 5 | Navbar do projeto é local (não usa `<Navbar>` do mothership-ds), reaproveitando as classes `.ms-navbar*` | O `<Navbar>` da lib espera links reais (`href`) com scroll-spy; aqui a navegação é por estado/clique, sem URLs (decisão #1) | 2026-08-05 |
 | 6 | Transição de fade só com CSS (`@keyframes` + estado do React), sem framer-motion/motion | É um fade sequencial simples (sai → monta a nova → entra) com um leve deslocamento vertical — não precisa de gestos, layout compartilhado (`layoutId`) nem spring physics que justifiquem trazer uma lib nova só pra isso; `useSectionTransition` (`src/lib/`) orquestra sai/monta/entra com dois `setTimeout` casados às durações do CSS | 2026-08-05 |
 | 7 | Serviços empilha no mobile (não vira carrossel) | Só 3 itens curtos (ícone + título + 1–2 linhas) — um `Carousel` seria mecanismo demais pra tão pouco conteúdo; empilhado cabe sem scroll até em viewports baixas (testado 360×740 e 1366×600) | 2026-08-05 |
 | 8 | Preview de desenvolvimento no GitHub Pages (repo `valnezjr/valnezjrlp`, público — obrigatório pro Pages gratuito), não Vercel/Netlify como o roteiro sugeria | Deploy automático a cada push em `main` via Actions (`.github/workflows/pages.yml`), sem custo/config extra, suficiente pra acompanhar progresso; não é a hospedagem final — sem lib de rotas nem URLs profundas (decisão #1), não há armadilha de SPA fallback pra configurar no Pages | 2026-08-05 |
-| 9 | [preencher conforme o projeto evoluir] | | |
+| 9 | `Modal` do mothership-ds ganha a prop `headerExtra` (upstream, v1.4.0) | `.ms-modal__body` tem `overflow-x: hidden` (reserva de espaço da barra de rolagem) — cortava o hover de ícones com `HoverEdge` no cabeçalho dos modais de Serviços; `.ms-modal__head` não tem essa restrição. Mudança feita na própria lib, não um workaround local | 2026-08-05 |
+| 10 | Seção Contato sem formulário — só links diretos (WhatsApp, e-mail, Instagram) | Campo de nome/e-mail/mensagem não fazia sentido pra esta seção específica; `lib/sendContact.ts` removido (ficou órfão). Não é remoção de `Field`/`Input`/`Textarea`/`Button` da lib mothership-ds, que seguem disponíveis | 2026-08-05 |
+| 11 | [preencher conforme o projeto evoluir] | | |
