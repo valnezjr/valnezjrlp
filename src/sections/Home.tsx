@@ -13,8 +13,12 @@ import type { SectionId } from "@/lib/navigation";
 // via <animateTransform> do próprio SVG, ver mothership-ds/LogoMark.tsx).
 // LogoMark não tem uso isolado fora do Splash por design — as partes
 // nascem fora de posição, esperando essa montagem (mothership-ds
-// styleguide, story "Splash"). Só a partir de lg (1024px): abaixo disso
-// a dupla coluna não cabe sem apertar o texto ou criar scroll.
+// styleguide, story "Splash"). Presente em toda largura, não só ≥1024px
+// (feedback direto: sumia por completo no mobile) — menor e acima do
+// Hero em telas estreitas (`order-first` na coluna, `flex-col`),
+// crescendo e indo pro lado a partir de lg (`lg:order-none` volta à
+// ordem do DOM — Hero primeiro — que em `lg:flex-row` põe a logo à
+// direita).
 //
 // style={{ background: "none" }} no Splash: .ms-splash sempre pinta o
 // próprio --bg-base/--bg-page por baixo (faz sentido em tela cheia,
@@ -41,7 +45,7 @@ export function Home({ onNavigate }: { onNavigate: (section: SectionId) => void 
 
   return (
     <SectionShell>
-      <div className="flex w-full max-w-5xl flex-col items-center gap-8 lg:flex-row lg:justify-between">
+      <div className="flex w-full max-w-5xl flex-col items-center gap-4 sm:gap-6 lg:flex-row lg:justify-between lg:gap-8">
         <div className="flex-1">
           <Hero
             title={
@@ -62,7 +66,7 @@ export function Home({ onNavigate }: { onNavigate: (section: SectionId) => void 
             }
           />
         </div>
-        <div className="relative hidden h-96 w-96 shrink-0 lg:block">
+        <div className="relative order-first h-28 w-28 shrink-0 sm:h-36 sm:w-36 lg:order-none lg:h-96 lg:w-96">
           <Splash inline persistent ready instant={skipIntro} style={{ background: "none" }} />
         </div>
       </div>
