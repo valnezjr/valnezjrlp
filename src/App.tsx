@@ -1,5 +1,5 @@
 import { useEffect, useState, type ComponentType } from "react";
-import { ThemeProvider } from "mothership-ds";
+import { LivingBackground, ThemeProvider } from "mothership-ds";
 import { Navbar } from "@/components/Navbar";
 import { SECTIONS, type SectionId } from "@/lib/navigation";
 import { useSectionTransition } from "@/lib/useSectionTransition";
@@ -59,6 +59,7 @@ function App() {
 
   return (
     <ThemeProvider>
+      <LivingBackground />
       <div className="flex h-full w-full flex-col overflow-hidden">
         <Navbar active={active} onNavigate={navigate} />
         <main

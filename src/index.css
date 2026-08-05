@@ -3,8 +3,16 @@
 
 /* Tailwind fica só pra layout/posicionamento (flex, grid, espaçamento) —
    cor e tipografia vêm inteiramente do mothership-ds (tokens.css,
-   herdados via .ms-page no #root). Nunca hardcodar cor hex aqui nem em
-   componente: usar sempre var(--color-*) do mothership-ds. */
+   herdados via .ms-page no <body>). Nunca hardcodar cor hex aqui nem em
+   componente: usar sempre var(--color-*) do mothership-ds.
+
+   .ms-page fica no <body>, não no #root: Modal/Drawer/Popover/
+   DropdownMenu portam pra document.body diretamente (createPortal),
+   fora da árvore do #root — se .ms-page estivesse só no #root, esse
+   conteúdo portado nunca herdaria cor/fonte (bug real: título do Modal
+   saindo preto, cor padrão do navegador, em vez de var(--color-text)).
+   Mesma convenção do próprio styleguide do mothership-ds
+   (<body class="ms-page">). */
 
 /* Layout sem scroll — architecture.md §4. 100dvh (nunca vh) evita que a
    barra de endereço do navegador mobile estoure a altura da viewport. */
@@ -19,9 +27,9 @@ body,
 
 /* .ms-page (mothership-ds) define min-height: 100vh — no mobile, 100vh
    pode ser maior que os 100dvh acima (barra de endereço), reabrindo o
-   scroll que essa regra existe pra evitar. #root já está limitado por
+   scroll que essa regra existe pra evitar. body já está limitado por
    height acima; min-height não deve competir com isso aqui. */
-#root.ms-page {
+body.ms-page {
   min-height: 0;
 }
 
