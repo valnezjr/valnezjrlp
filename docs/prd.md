@@ -53,8 +53,9 @@ Divulgar os serviços de Valnez Júnior, Designer Engineer, e converter visitant
 
 ### 5.3 Sobre / Portfólio
 - **Apresentação:** "Designer desde 2018, especializado em web/app design
-  desde 2022 — atendo remotamente startups de tecnologia do eixo Rio-SP.
-  Vamos produzir juntos?" (copy final, 2026-08-06). Foto (`Avatar`, ainda
+  desde 2022 — atendo remotamente startups de tecnologia e pequenos e
+  médios negócios. Vamos produzir juntos?" (copy final, 2026-08-06 —
+  revisado pra não soar exclusivo a startups). Foto (`Avatar`, ainda
   placeholder — só iniciais "VJ") + parágrafo breve, no topo.
 - **Competências (badges):** _[PENDENTE]_
 - **Projetos:** portfólio estático (decisão de 2026-08-06 — não busca do

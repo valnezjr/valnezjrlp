@@ -3,12 +3,16 @@ import { Avatar, Gallery, type GalleryCategory, type GalleryItem } from "mothers
 import { SectionShell } from "@/components/SectionShell";
 
 // docs/prd.md §5.3 — apresentação (parágrafo abaixo do "Sobre") já é
-// texto final, revisado como copy em 2026-08-06: cortado pra caber no
-// espaço curto reservado (largura máxima 480px, ms-text-xs, sem sobra
-// de altura na seção — decisão #7) sem perder os fatos centrais (desde
-// quando, especialização, onde atende). Competências (badges) e os
-// projetos da galeria (`PLACEHOLDER_PROJECTS` abaixo) continuam
-// [PENDENTE] — falta o conteúdo real de Valnez.
+// texto final, revisado como copy em 2026-08-06 (segunda rodada:
+// "atendo startups... e pequenos e médios negócios" no lugar do eixo
+// Rio-SP, pra não soar exclusivo a startups). Cortado pra caber no
+// espaço curto reservado (ms-text-xs, sem sobra de altura na seção —
+// decisão #7) sem perder os fatos centrais (desde quando,
+// especialização, quem atende); max-w-[480px] sm:max-w-[620px] dá mais
+// largura a partir de sm especificamente pra 1366×600 não quebrar numa
+// 3ª linha. Competências (badges) e os projetos da galeria
+// (`PLACEHOLDER_PROJECTS` abaixo) continuam [PENDENTE] — falta o
+// conteúdo real de Valnez.
 const CATEGORIES: GalleryCategory[] = [
   { key: "digital", label: "Digital Design", tone: "accent" },
   { key: "brand", label: "Brand Design", tone: "highlight" },
@@ -90,9 +94,9 @@ export function Sobre() {
             <h1 className="ms-h2" style={{ marginBottom: 0 }}>
               Sobre
             </h1>
-            <p className="ms-text-xs ms-text-muted" style={{ maxWidth: 480 }}>
+            <p className="ms-text-xs ms-text-muted max-w-[480px] sm:max-w-[620px]">
               Designer desde 2018, especializado em web/app design desde 2022 — atendo remotamente
-              startups de tecnologia do eixo Rio-SP. Vamos produzir juntos?
+              startups de tecnologia e pequenos e médios negócios. Vamos produzir juntos?
             </p>
           </div>
         </div>
