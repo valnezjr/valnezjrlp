@@ -116,10 +116,15 @@ Tudo precisa caber em 100% da viewport, sem scroll, inclusive no mobile.
 ## Etapa 6 — Seção Sobre / Portfólio
 
 > **Nota (2026-08-06):** implementada diferente do desenho original abaixo
-> — apresentação no topo (não numa coluna ao lado), portfólio como
-> galeria paginada por `StepIndicator` (não carrossel), sem busca do
-> GitHub. Decisões registradas em `docs/architecture.md` § Registro de
-> decisões #17–21. **Conteúdo real ainda pendente** — `Sobre.tsx` usa
+> — apresentação no topo (não numa coluna ao lado), portfólio no
+> componente `Gallery` do mothership-ds (filtro por categoria, badges,
+> cores por categoria — não uma grade própria), paginado
+> (`itemsPerPage`, v1.7.0) em vez de carrossel, sem busca do GitHub.
+> Uma primeira tentativa reimplementou a grade do zero em vez de usar a
+> `Gallery` de verdade e saiu sem nada da identidade visual dela —
+> corrigido dando paginação nativa à própria `Gallery`. Decisões
+> registradas em `docs/architecture.md` § Registro de decisões #17–22.
+> **Conteúdo real ainda pendente** — `Sobre.tsx` usa
 > `PLACEHOLDER_PROJECTS` e um texto de apresentação entre colchetes até
 > Valnez organizar o material de verdade (ver `docs/prd.md` §5.3).
 

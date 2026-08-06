@@ -55,13 +55,16 @@ Divulgar os serviços de Valnez Júnior, Designer Engineer, e converter visitant
 - **Apresentação:** _[PENDENTE — Valnez ainda está organizando esse conteúdo]_. Foto (`Avatar`) + parágrafo breve, no topo.
 - **Competências (badges):** _[PENDENTE]_
 - **Projetos:** portfólio estático (decisão de 2026-08-06 — não busca do
-  GitHub; ver `docs/architecture.md` § Registro de decisões), em
-  galeria paginada abaixo da apresentação — quantos projetos couberem
-  por página (4 no mobile, 6 a partir de `sm`), navegado por
-  `StepIndicator` (`showCount`, `label="Página"`, mothership-ds
-  v1.6.0). Clique num projeto abre `Modal` com a descrição completa.
-  **Ainda com dados placeholder** (`Sobre.tsx`, `PLACEHOLDER_PROJECTS`)
-  — falta a lista real de projetos (título, descrição, tags, imagem).
+  GitHub; ver `docs/architecture.md` § Registro de decisões), no
+  componente `Gallery` do mothership-ds abaixo da apresentação — filtro
+  por categoria, badges e cores por categoria, foto e descrição por
+  projeto, exatamente como a `Gallery` já funciona em qualquer outro
+  lugar. Paginada (`itemsPerPage`, mothership-ds v1.7.0) em vez de
+  crescer em altura — quantas colunas couberem numa única linha por
+  página (2 estreito / 3 a partir de `sm` / 5 quando a tela é larga e
+  baixa ao mesmo tempo). **Ainda com dados placeholder** (`Sobre.tsx`,
+  `PLACEHOLDER_PROJECTS`) — falta a lista real de projetos (título,
+  descrição, categoria, imagem).
 
 ### 5.4 Contato
 - **Título:** "Vamos conversar?"
