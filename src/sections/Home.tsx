@@ -26,7 +26,21 @@ import type { SectionId } from "@/lib/navigation";
 // bastante espaço morto em cima/embaixo (letterbox), por menor que a
 // caixa fosse. `aspect-[52/35]` (mesma proporção do viewBox,
 // 7800/5250 simplificado) faz a caixa casar com o desenho — preenche
-// de verdade, sem aumentar a altura ocupada na página.
+// de verdade, sem aumentar a altura ocupada na página. Mesmo preenchida,
+// ainda ficava "pequena" pro gosto — o espaço vertical realmente livre
+// varia MUITO por altura de tela (iPhone SE a 667px tem bem menos folga
+// que um Android a 740px, que tem bem menos que um 844px), então um só
+// tamanho por LARGURA deixava folga sem uso nas telas mais altas. Por
+// isso os degraus de tamanho (`w-64` → `[@media(min-height:650px)]:w-72`
+// → `:700px]:w-80` → `:850px]:w-96`) reagem à ALTURA da viewport, não à
+// largura — o Tailwind não tem breakpoint padrão pra isso, só a sintaxe
+// arbitrária de media query. `lg:!aspect-auto lg:!h-96 lg:!w-96`
+// precisou de `!important`: essas media queries de altura e o `lg:` (de
+// largura) do Tailwind têm a mesma especificidade CSS — numa tela que
+// bate os dois critérios ao mesmo tempo (ex.: 1024×768, que é `lg` e
+// também passa de 700px de altura), sem forçar a prioridade do `lg:` a
+// ordem de saída do Tailwind podia deixar o tamanho de altura "vencer"
+// por acidente, quebrando o quadrado fixo do desktop.
 //
 // className="!p-0 lg:..." no Hero: achado ao verificar essa correção —
 // `.ms-hero` (mothership-ds) já vem com padding vertical generoso
@@ -91,7 +105,7 @@ export function Home({ onNavigate }: { onNavigate: (section: SectionId) => void 
             }
           />
         </div>
-        <div className="relative order-first aspect-[52/35] w-64 shrink-0 sm:w-80 lg:order-none lg:aspect-auto lg:h-96 lg:w-96">
+        <div className="relative order-first aspect-[52/35] w-64 shrink-0 [@media(min-height:650px)]:w-72 [@media(min-height:700px)]:w-80 [@media(min-height:850px)]:w-96 lg:order-none lg:!aspect-auto lg:!h-96 lg:!w-96">
           <Splash inline persistent ready instant={skipIntro} style={{ background: "none" }} />
         </div>
       </div>
