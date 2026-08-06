@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import { Avatar, Gallery, type GalleryCategory, type GalleryItem } from "mothership-ds";
 import { SectionShell } from "@/components/SectionShell";
 
-// docs/prd.md §5.3 — apresentação, competências e projetos ainda estão
-// [PENDENTE] (Valnez organizando o conteúdo real). O que segue é
-// placeholder estrutural pra validar layout/paginação/filtro — trocar
-// PLACEHOLDER_PROJECTS e o texto de apresentação pelo conteúdo real
-// antes de considerar a seção pronta.
+// docs/prd.md §5.3 — apresentação (parágrafo abaixo do "Sobre") já é
+// texto final, revisado como copy em 2026-08-06: cortado pra caber no
+// espaço curto reservado (largura máxima 480px, ms-text-xs, sem sobra
+// de altura na seção — decisão #7) sem perder os fatos centrais (desde
+// quando, especialização, onde atende). Competências (badges) e os
+// projetos da galeria (`PLACEHOLDER_PROJECTS` abaixo) continuam
+// [PENDENTE] — falta o conteúdo real de Valnez.
 const CATEGORIES: GalleryCategory[] = [
   { key: "digital", label: "Digital Design", tone: "accent" },
   { key: "brand", label: "Brand Design", tone: "highlight" },
@@ -81,15 +83,16 @@ export function Sobre() {
 
   return (
     <SectionShell>
-      <div className="flex w-full max-w-4xl flex-col items-center gap-3">
+      <div className="flex w-full max-w-4xl flex-col items-center gap-2">
         <div className="flex flex-col items-center gap-1 text-center">
           <Avatar size="sm" initials="VJ" alt="Valnez Júnior" />
           <div>
-            <h1 className="ms-h2" style={{ marginBottom: "var(--space-1)" }}>
+            <h1 className="ms-h2" style={{ marginBottom: 0 }}>
               Sobre
             </h1>
             <p className="ms-text-xs ms-text-muted" style={{ maxWidth: 480 }}>
-              [Apresentação breve — pendente, ver docs/prd.md §5.3]
+              Designer desde 2018, especializado em web/app design desde 2022 — atendo remotamente
+              startups de tecnologia do eixo Rio-SP. Vamos produzir juntos?
             </p>
           </div>
         </div>

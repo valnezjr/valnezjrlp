@@ -52,7 +52,10 @@ Divulgar os serviços de Valnez Júnior, Designer Engineer, e converter visitant
 > Reorganização pedida em 2026-08-05: de 3 serviços soltos (Brand Design, UI/UX Design, Product Design) pra 3 categorias com subitens. Descrições e nomes dos subitens em português são rascunho meu a partir do que você passou em inglês ("Digital Design (UI/UX, Product Design, Design System), Brand Design (Branding, Visual Identity), Print (Packaging Design, Print Design)") — mantive nomes de disciplina consolidados em inglês (UI/UX Design, Product Design, Design System, Branding, Digital Design, Brand Design, Print — já eram assim antes) e traduzi só os subitens que soam mais naturais em português (Visual Identity → Identidade Visual, Packaging Design → Design de Embalagem, Print Design → Peças Gráficas). Revise à vontade.
 
 ### 5.3 Sobre / Portfólio
-- **Apresentação:** _[PENDENTE — Valnez ainda está organizando esse conteúdo]_. Foto (`Avatar`) + parágrafo breve, no topo.
+- **Apresentação:** "Designer desde 2018, especializado em web/app design
+  desde 2022 — atendo remotamente startups de tecnologia do eixo Rio-SP.
+  Vamos produzir juntos?" (copy final, 2026-08-06). Foto (`Avatar`, ainda
+  placeholder — só iniciais "VJ") + parágrafo breve, no topo.
 - **Competências (badges):** _[PENDENTE]_
 - **Projetos:** portfólio estático (decisão de 2026-08-06 — não busca do
   GitHub; ver `docs/architecture.md` § Registro de decisões), no
