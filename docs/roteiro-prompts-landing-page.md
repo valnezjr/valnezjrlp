@@ -115,6 +115,14 @@ Tudo precisa caber em 100% da viewport, sem scroll, inclusive no mobile.
 
 ## Etapa 6 — Seção Sobre / Portfólio
 
+> **Nota (2026-08-06):** implementada diferente do desenho original abaixo
+> — apresentação no topo (não numa coluna ao lado), portfólio como
+> galeria paginada por `StepIndicator` (não carrossel), sem busca do
+> GitHub. Decisões registradas em `docs/architecture.md` § Registro de
+> decisões #17–21. **Conteúdo real ainda pendente** — `Sobre.tsx` usa
+> `PLACEHOLDER_PROJECTS` e um texto de apresentação entre colchetes até
+> Valnez organizar o material de verdade (ver `docs/prd.md` §5.3).
+
 ```
 Implemente a seção Sobre/Portfólio, substituindo o placeholder, conforme a seção 5.3 do docs/prd.md.
 

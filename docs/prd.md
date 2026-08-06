@@ -52,9 +52,16 @@ Divulgar os serviços de Valnez Júnior, Designer Engineer, e converter visitant
 > Reorganização pedida em 2026-08-05: de 3 serviços soltos (Brand Design, UI/UX Design, Product Design) pra 3 categorias com subitens. Descrições e nomes dos subitens em português são rascunho meu a partir do que você passou em inglês ("Digital Design (UI/UX, Product Design, Design System), Brand Design (Branding, Visual Identity), Print (Packaging Design, Print Design)") — mantive nomes de disciplina consolidados em inglês (UI/UX Design, Product Design, Design System, Branding, Digital Design, Brand Design, Print — já eram assim antes) e traduzi só os subitens que soam mais naturais em português (Visual Identity → Identidade Visual, Packaging Design → Design de Embalagem, Print Design → Peças Gráficas). Revise à vontade.
 
 ### 5.3 Sobre / Portfólio
-- **Apresentação:** _[PENDENTE — Valnez ainda está organizando esse conteúdo, revisitar este tópico antes da Etapa 6]_
+- **Apresentação:** _[PENDENTE — Valnez ainda está organizando esse conteúdo]_. Foto (`Avatar`) + parágrafo breve, no topo.
 - **Competências (badges):** _[PENDENTE]_
-- **Projetos (3–4):** _[PENDENTE — inclui decidir se o portfólio fica nesta tabela estática ou é buscado dinamicamente do GitHub (`Sobre.tsx` já tem uma nota nesse sentido); se for GitHub, falta o username e o critério de filtro]_
+- **Projetos:** portfólio estático (decisão de 2026-08-06 — não busca do
+  GitHub; ver `docs/architecture.md` § Registro de decisões), em
+  galeria paginada abaixo da apresentação — quantos projetos couberem
+  por página (4 no mobile, 6 a partir de `sm`), navegado por
+  `StepIndicator` (`showCount`, `label="Página"`, mothership-ds
+  v1.6.0). Clique num projeto abre `Modal` com a descrição completa.
+  **Ainda com dados placeholder** (`Sobre.tsx`, `PLACEHOLDER_PROJECTS`)
+  — falta a lista real de projetos (título, descrição, tags, imagem).
 
 ### 5.4 Contato
 - **Título:** "Vamos conversar?"
