@@ -141,14 +141,21 @@ export function Sobre() {
           PDF) por cima da página, mesma exibição de qualquer Modal —
           véu com blur, fecha no X ou clique fora (Modal já faz isso
           sozinho, dismissable por padrão). Pedido direto: abrir o PDF
-          "parecido com os modais", não um viewer/rota nova. */}
-      <Modal open={selected != null} onClose={() => setSelected(null)} title={selected?.title} size="lg">
+          "parecido com os modais", não um viewer/rota nova.
+
+          size="full" (mothership-ds, upstream) em vez de "lg": feedback
+          direto de que 880px ficava pequeno demais pra ler o PDF
+          confortavelmente. .ms-modal__body já é flex:1 — com "full"
+          dando height:100% ao Modal, o iframe com height:100% preenche
+          o espaço de verdade (quase toda a viewport), não uma altura
+          chutada em vh. */}
+      <Modal open={selected != null} onClose={() => setSelected(null)} title={selected?.title} size="full">
         {selected && (
           <iframe
             key={selected.file}
             src={`${BASE}portfolio/${selected.file}.pdf`}
             title={selected.title}
-            style={{ width: "100%", height: "75vh", border: "none", borderRadius: "var(--radius-md)" }}
+            style={{ width: "100%", height: "100%", border: "none", borderRadius: "var(--radius-md)" }}
           />
         )}
       </Modal>
