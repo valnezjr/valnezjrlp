@@ -146,8 +146,8 @@ export function Sobre() {
 
   return (
     <SectionShell>
-      <div className="flex w-full max-w-4xl flex-col items-center gap-2">
-        <div className="flex flex-col items-center gap-1 text-center">
+      <div className="flex w-full max-w-4xl flex-col items-center gap-1 sm:gap-2">
+        <div className="flex flex-col items-center gap-0.5 text-center sm:gap-1">
           <Avatar size="sm" initials="VJ" alt="Valnez Júnior" />
           <div>
             <h1 className="ms-h2" style={{ marginBottom: 0 }}>

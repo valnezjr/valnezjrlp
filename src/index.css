@@ -68,12 +68,70 @@ body.ms-page {
    navegador) encolhe cada card na horizontal, e a foto 4:3 encolhe
    junto (photo-height = column-width × 0.75). */
 .portfolio-gallery .ms-gallery__grid {
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr;
+}
+
+/* Abaixo de sm o card empilha em coluna única (1 por linha, 2 por
+   página via useItemsPerPage) — mas o card padrão da Gallery é foto
+   4:3 em cima + texto embaixo, então mesmo largura cheia ele fica alto
+   demais pra 2 caberem juntos sem gerar scroll (photo sozinha ~240px
+   numa tela de 375px de largura). Vira lista horizontal (foto miniatura
+   à esquerda, texto à direita) — mesma largura total, muito menos
+   altura por card, e o texto ganha mais largura pra respirar (pedido
+   direto: "aproveitamento maior de tela útil"). */
+.portfolio-gallery .ms-gallery__item {
+  flex-direction: row;
+}
+
+.portfolio-gallery .ms-gallery__photo {
+  flex: 0 0 96px;
+  aspect-ratio: 1 / 1;
+}
+
+.portfolio-gallery .ms-gallery__info {
+  flex: 1;
+  min-width: 0;
+  justify-content: center;
+}
+
+/* Pills (Todos/Digital Design/Brand Design) somadas passam da largura
+   útil em 360px por pouco (~15px) — sem isso, quebram pra 2 linhas e
+   estouram os ~47px que faltavam pra caber, mesmo com o card já
+   compacto. Encolhido só o suficiente pra caber numa linha única. */
+.portfolio-gallery .ms-gallery__filters {
+  gap: var(--space-1);
+}
+
+.portfolio-gallery .ms-gallery__filter {
+  padding: var(--space-1) var(--space-3);
+  font-size: var(--text-xs);
 }
 
 @media (min-width: 640px) {
   .portfolio-gallery .ms-gallery__grid {
     grid-template-columns: repeat(3, 1fr);
+  }
+
+  .portfolio-gallery .ms-gallery__item {
+    flex-direction: column;
+  }
+
+  .portfolio-gallery .ms-gallery__photo {
+    flex: initial;
+    aspect-ratio: 4 / 3;
+  }
+
+  .portfolio-gallery .ms-gallery__info {
+    justify-content: flex-start;
+  }
+
+  .portfolio-gallery .ms-gallery__filters {
+    gap: var(--space-2);
+  }
+
+  .portfolio-gallery .ms-gallery__filter {
+    padding: var(--space-2) var(--space-4);
+    font-size: var(--text-sm);
   }
 }
 
