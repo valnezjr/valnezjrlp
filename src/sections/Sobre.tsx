@@ -1,6 +1,13 @@
-import { useEffect, useState } from "react";
-import { Avatar, Gallery, Modal, type GalleryCategory, type GalleryItem } from "mothership-ds";
+import { lazy, Suspense, useEffect, useState } from "react";
+import { Avatar, Gallery, Loader, Modal, type GalleryCategory, type GalleryItem } from "mothership-ds";
 import { SectionShell } from "@/components/SectionShell";
+
+// pdfjs-dist (usado só dentro de PdfViewer) é pesado — carregado de
+// verdade só empurraria ~200KB gzip pro bundle principal, baixados por
+// toda visita ao site, mesmo por quem nunca abre um projeto. lazy()
+// isola PdfViewer (e a lib inteira que ele importa) num chunk próprio,
+// buscado só no clique real que abre o Modal.
+const PdfViewer = lazy(() => import("@/components/PdfViewer").then((m) => ({ default: m.PdfViewer })));
 
 // docs/prd.md §5.3 — apresentação (parágrafo abaixo do "Sobre") já é
 // texto final, revisado como copy em 2026-08-06 (segunda rodada:
@@ -111,6 +118,17 @@ function useItemsPerPage() {
   return itemsPerPage;
 }
 
+// Mesmo visual do carregamento que o próprio PdfViewer usa por dentro
+// (var(--space-5) etc.) — cobre a fase anterior a essa, quando o chunk
+// do PdfViewer (e do pdfjs-dist que ele importa) ainda nem chegou.
+function PdfViewerFallback() {
+  return (
+    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%" }}>
+      <Loader label="Carregando visualizador…" />
+    </div>
+  );
+}
+
 export function Sobre() {
   const itemsPerPage = useItemsPerPage();
   // Fica com o último projeto durante o fade de saída do Modal (só
@@ -159,17 +177,20 @@ export function Sobre() {
           size="full" (mothership-ds, upstream) em vez de "lg": feedback
           direto de que 880px ficava pequeno demais pra ler o PDF
           confortavelmente. .ms-modal__body já é flex:1 — com "full"
-          dando height:100% ao Modal, o iframe com height:100% preenche
-          o espaço de verdade (quase toda a viewport), não uma altura
-          chutada em vh. */}
+          dando height:100% ao Modal, o PdfViewer com height:100%
+          preenche o espaço de verdade (quase toda a viewport).
+
+          PdfViewer (src/components/PdfViewer.tsx) no lugar de
+          <iframe src={pdfUrl}>: o iframe dependia do visualizador
+          nativo de PDF do navegador, que não existe dentro de iframe no
+          Chrome Android (e não só lá) — caía num botão de "baixar o
+          arquivo" em vez de mostrar o PDF. Decisão registrada em
+          docs/architecture.md. */}
       <Modal open={selected != null} onClose={() => setSelected(null)} title={selected?.title} size="full">
         {selected && (
-          <iframe
-            key={selected.file}
-            src={pdfUrlFor(selected.file)}
-            title={selected.title}
-            style={{ width: "100%", height: "100%", border: "none", borderRadius: "var(--radius-md)" }}
-          />
+          <Suspense fallback={<PdfViewerFallback />}>
+            <PdfViewer key={selected.file} src={pdfUrlFor(selected.file)} title={selected.title} />
+          </Suspense>
         )}
       </Modal>
     </SectionShell>
