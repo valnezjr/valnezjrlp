@@ -71,29 +71,6 @@ body.ms-page {
   grid-template-columns: 1fr;
 }
 
-/* Abaixo de sm o card empilha em coluna única (1 por linha, 2 por
-   página via useItemsPerPage) — mas o card padrão da Gallery é foto
-   4:3 em cima + texto embaixo, então mesmo largura cheia ele fica alto
-   demais pra 2 caberem juntos sem gerar scroll (photo sozinha ~240px
-   numa tela de 375px de largura). Vira lista horizontal (foto miniatura
-   à esquerda, texto à direita) — mesma largura total, muito menos
-   altura por card, e o texto ganha mais largura pra respirar (pedido
-   direto: "aproveitamento maior de tela útil"). */
-.portfolio-gallery .ms-gallery__item {
-  flex-direction: row;
-}
-
-.portfolio-gallery .ms-gallery__photo {
-  flex: 0 0 96px;
-  aspect-ratio: 1 / 1;
-}
-
-.portfolio-gallery .ms-gallery__info {
-  flex: 1;
-  min-width: 0;
-  justify-content: center;
-}
-
 /* Pills (Todos/Digital Design/Brand Design) somadas passam da largura
    útil em 360px por pouco (~15px) — sem isso, quebram pra 2 linhas e
    estouram os ~47px que faltavam pra caber, mesmo com o card já
@@ -107,22 +84,44 @@ body.ms-page {
   font-size: var(--text-xs);
 }
 
+/* Card padrão da lib (foto 4:3 em cima, texto embaixo — sem inventar
+   layout alternativo, pedido direto) cabe 1 por página em 360×740 e
+   390×844, mas não em 360×640/375×667 (a foto sozinha já passa de
+   240px numa tela de 375px de largura). Em vez de cortar/sobrepor a
+   navbar nesses dois casos, cabeçalho/filtros/paginação ficam fixos e
+   só a grade (sempre 1 card) rola internamente o quanto falta — só
+   entra em ação quando o card realmente não cabe; nas telas mais
+   altas, onde já cabe inteiro, `overflow-y: auto` não mostra barra
+   nenhuma. `.ms-gallery` (sem display próprio por padrão) vira coluna
+   flex com altura vinda do `flex-1` do wrapper em Sobre.tsx. */
+.ms-gallery.portfolio-gallery {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.portfolio-gallery .ms-gallery__filters {
+  flex: 0 0 auto;
+}
+
+.portfolio-gallery .ms-gallery__grid {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.portfolio-gallery .ms-gallery__pager {
+  flex: 0 0 auto;
+}
+
 @media (min-width: 640px) {
+  .ms-gallery.portfolio-gallery {
+    display: block;
+  }
+
   .portfolio-gallery .ms-gallery__grid {
     grid-template-columns: repeat(3, 1fr);
-  }
-
-  .portfolio-gallery .ms-gallery__item {
-    flex-direction: column;
-  }
-
-  .portfolio-gallery .ms-gallery__photo {
-    flex: initial;
-    aspect-ratio: 4 / 3;
-  }
-
-  .portfolio-gallery .ms-gallery__info {
-    justify-content: flex-start;
+    overflow-y: visible;
   }
 
   .portfolio-gallery .ms-gallery__filters {
