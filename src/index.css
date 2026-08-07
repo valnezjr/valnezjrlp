@@ -92,3 +92,28 @@ body.ms-page {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+/* Título real varia de tamanho ("Hotel Fênix" cabe numa linha,
+   "Precificação Beauty" e "André Azevedo Nutricionista" quebram pra
+   duas) — sem isso, a altura do card depende de qual título calhou de
+   cair naquela página/coluna, e o cálculo de quantos cabem sem estourar
+   a viewport (useItemsPerPage) deixa de valer pra qualquer página.
+   min-height reserva 2 linhas mesmo pros títulos de 1 linha, pra todo
+   card da mesma página ter a mesma altura sempre. */
+.portfolio-gallery .ms-gallery__title {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 2.6em;
+}
+
+/* Com o título uniforme, o card do portfólio real ainda estourava por
+   ~10px em 360×640 e 1366×600 (era um "quase" antes disso — a checagem
+   anterior só passava por sorte quando o título mais comprido da
+   página calhava de caber numa linha). Aperta o respiro vertical em
+   torno da grade (não do card em si) até sobrar margem de verdade,
+   testado até 1920×1080. */
+.portfolio-gallery .ms-gallery__filters { margin-bottom: var(--space-2); }
+.portfolio-gallery .ms-gallery__info { padding: var(--space-3) var(--space-4); }
+.portfolio-gallery .ms-gallery__pager { margin-top: var(--space-2); }

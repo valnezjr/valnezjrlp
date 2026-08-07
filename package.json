@@ -13,7 +13,7 @@
     "@tailwindcss/vite": "^4.3.3",
     "clsx": "^2.1.1",
     "lucide-react": "^1.27.0",
-    "mothership-ds": "github:valnezjr/mothership-ds#5e032b35189f3acc9b3f4318cabfe6ea2b73f701",
+    "mothership-ds": "github:valnezjr/mothership-ds#7b9b4e42391e1d6b04ae2e4f045cbce6910c2caa",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "tailwind-merge": "^3.6.0",

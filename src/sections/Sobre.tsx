@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Avatar, Gallery, type GalleryCategory, type GalleryItem } from "mothership-ds";
+import { Avatar, Gallery, Modal, type GalleryCategory, type GalleryItem } from "mothership-ds";
 import { SectionShell } from "@/components/SectionShell";
 
 // docs/prd.md §5.3 — apresentação (parágrafo abaixo do "Sobre") já é
@@ -10,30 +10,46 @@ import { SectionShell } from "@/components/SectionShell";
 // decisão #7) sem perder os fatos centrais (desde quando,
 // especialização, quem atende); max-w-[480px] sm:max-w-[620px] dá mais
 // largura a partir de sm especificamente pra 1366×600 não quebrar numa
-// 3ª linha. Competências (badges) e os projetos da galeria
-// (`PLACEHOLDER_PROJECTS` abaixo) continuam [PENDENTE] — falta o
+// 3ª linha. Competências (badges) continuam [PENDENTE] — falta o
 // conteúdo real de Valnez.
 const CATEGORIES: GalleryCategory[] = [
   { key: "digital", label: "Digital Design", tone: "accent" },
   { key: "brand", label: "Brand Design", tone: "highlight" },
-  { key: "print", label: "Print", tone: "orange" },
 ];
 
-const PLACEHOLDER_GRADIENTS = [
-  "linear-gradient(135deg,#6b4796,#00a7da)",
-  "linear-gradient(135deg,#63256b,#ffd000)",
-  "linear-gradient(135deg,#2e3f5e,#00d68f)",
-  "linear-gradient(135deg,#004357,#6b4796)",
-  "linear-gradient(135deg,#ff4d6d,#63256b)",
-  "linear-gradient(135deg,#00a7da,#00d68f)",
+// Projetos reais (public/portfolio/*.pdf — case studies de 6 páginas
+// cada, texto extraído dos próprios PDFs pra manter a copy consistente
+// com o que já existe neles). Sem categoria "print" (decisão #17 do
+// Servicos oferece o serviço, mas não há case completo dela ainda) —
+// melhor não mostrar um filtro que sempre dá vazio.
+interface Project {
+  file: string;
+  title: string;
+  description: string;
+  category: "digital" | "brand";
+}
+
+const PROJECTS: Project[] = [
+  { file: "01-lp-bones-express", title: "Bonés Express", description: "Landing page de captação de orçamento para fábrica de bonés personalizados.", category: "digital" },
+  { file: "02-lp-museu-mastodonte", title: "Museu Mastodonte", description: "Landing page editorial para museu de história natural.", category: "digital" },
+  { file: "03-lp-hotel-fenix", title: "Hotel Fênix", description: "Landing page de reserva para hotel em Campina Grande.", category: "digital" },
+  { file: "04-lp-bone-da-gente", title: "Boné da Gente", description: "Landing page institucional para fábrica de bonés personalizados.", category: "digital" },
+  { file: "05-app-gestao-beauty", title: "Precificação Beauty", description: "App de precificação e gestão para profissionais de beleza e estética.", category: "digital" },
+  { file: "06-app-polo-wear-bonus", title: "Polo Wear Bonus", description: "App de programa de bônus para clientes da marca Polo Wear.", category: "digital" },
+  { file: "07-app-pda-schedule", title: "PDA Agendamento", description: "App de agenda e ponto para prestadores de serviço terceirizados.", category: "digital" },
+  { file: "08-web-projeto-fmc", title: "Projeto FMC", description: "Portal de classificados com busca geolocalizada e perfis verificados.", category: "digital" },
+  { file: "09-app-fgw-construtora", title: "FGW Construtora", description: "App de gestão financeira de obras para construtora.", category: "digital" },
+  { file: "10-dev-decore-casa-textil", title: "Decore Casa Têxtil", description: "Landing page de captação para atacado de cama, mesa e banho — design e código.", category: "digital" },
+  { file: "11-dev-mothership-ds", title: "Mothership DS", description: "Design system próprio em React, aberto ao público via GitHub.", category: "digital" },
+  { file: "12-id-rc-strong", title: "RC Strong", description: "Rebranding de identidade visual para academia.", category: "brand" },
+  { file: "13-id-blooming-acessorios", title: "Blooming Acessórios", description: "Branding para marca de acessórios femininos.", category: "brand" },
+  { file: "14-id-andre-azevedo", title: "André Azevedo Nutricionista", description: "Branding para marca pessoal de nutricionista.", category: "brand" },
 ];
 
-const PLACEHOLDER_PROJECTS: GalleryItem[] = Array.from({ length: 9 }, (_, i) => ({
-  image: PLACEHOLDER_GRADIENTS[i % PLACEHOLDER_GRADIENTS.length],
-  title: `Projeto ${i + 1}`,
-  description: "Descrição breve do projeto — texto placeholder até o conteúdo real entrar aqui.",
-  categories: [CATEGORIES[i % CATEGORIES.length].key],
-}));
+// import.meta.env.BASE_URL: "/" no dev, "/valnezjrlp/" em produção
+// (vite.config.ts — GitHub Pages de projeto serve sob subpasta). Sem
+// isso os PDFs/thumbs quebrariam só no ar, nunca localmente.
+const BASE = import.meta.env.BASE_URL;
 
 // Gallery (mothership-ds v1.7.0) com itemsPerPage: paginação nativa em
 // vez de crescer em altura, sem abrir mão de filtro/badges/cores de
@@ -84,6 +100,18 @@ function useItemsPerPage() {
 
 export function Sobre() {
   const itemsPerPage = useItemsPerPage();
+  // Fica com o último projeto durante o fade de saída do Modal (só
+  // `open` vira false) — limpar junto cortaria o PDF no meio da
+  // animação, mesmo padrão já usado em Servicos.tsx.
+  const [selected, setSelected] = useState<Project | null>(null);
+
+  const items: GalleryItem[] = PROJECTS.map((project) => ({
+    image: `url(${BASE}portfolio/thumbs/${project.file}.png)`,
+    title: project.title,
+    description: project.description,
+    categories: [project.category],
+    onClick: () => setSelected(project),
+  }));
 
   return (
     <SectionShell>
@@ -104,10 +132,26 @@ export function Sobre() {
         <Gallery
           className="portfolio-gallery w-full"
           categories={CATEGORIES}
-          items={PLACEHOLDER_PROJECTS}
+          items={items}
           itemsPerPage={itemsPerPage}
         />
       </div>
+
+      {/* Gallery.onClick (mothership-ds v1.7.0) abre o case completo (o
+          PDF) por cima da página, mesma exibição de qualquer Modal —
+          véu com blur, fecha no X ou clique fora (Modal já faz isso
+          sozinho, dismissable por padrão). Pedido direto: abrir o PDF
+          "parecido com os modais", não um viewer/rota nova. */}
+      <Modal open={selected != null} onClose={() => setSelected(null)} title={selected?.title} size="lg">
+        {selected && (
+          <iframe
+            key={selected.file}
+            src={`${BASE}portfolio/${selected.file}.pdf`}
+            title={selected.title}
+            style={{ width: "100%", height: "75vh", border: "none", borderRadius: "var(--radius-md)" }}
+          />
+        )}
+      </Modal>
     </SectionShell>
   );
 }
