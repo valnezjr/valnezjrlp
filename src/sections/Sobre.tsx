@@ -51,6 +51,19 @@ const PROJECTS: Project[] = [
 // isso os PDFs/thumbs quebrariam só no ar, nunca localmente.
 const BASE = import.meta.env.BASE_URL;
 
+// public/portfolio-mobile/*.pdf — versão de cada case reformatada em
+// coluna única (retrato, 9 páginas em vez de 6) pra leitura confortável
+// em tela de celular, sem precisar dar zoom/scroll horizontal no PDF
+// desktop. Mesmo `file` dos projetos (PROJECTS), só com sufixo
+// "-mobile". `<640px` é o mesmo corte que o resto do arquivo já usa pra
+// "estreito" (useItemsPerPage) — sem hook/estado próprio porque só
+// importa no instante em que o Modal abre, não precisa reagir a resize
+// com o Modal já aberto.
+function pdfUrlFor(file: string): string {
+  const mobile = typeof window !== "undefined" && window.matchMedia("(max-width: 639px)").matches;
+  return mobile ? `${BASE}portfolio-mobile/${file}-mobile.pdf` : `${BASE}portfolio/${file}.pdf`;
+}
+
 // Gallery (mothership-ds v1.7.0) com itemsPerPage: paginação nativa em
 // vez de crescer em altura, sem abrir mão de filtro/badges/cores de
 // categoria — a primeira versão desta seção tinha reimplementado uma
@@ -153,7 +166,7 @@ export function Sobre() {
         {selected && (
           <iframe
             key={selected.file}
-            src={`${BASE}portfolio/${selected.file}.pdf`}
+            src={pdfUrlFor(selected.file)}
             title={selected.title}
             style={{ width: "100%", height: "100%", border: "none", borderRadius: "var(--radius-md)" }}
           />

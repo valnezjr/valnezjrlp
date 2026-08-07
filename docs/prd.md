@@ -70,15 +70,19 @@ Divulgar os serviços de Valnez Júnior, Designer Engineer, e converter visitant
   (`itemsPerPage`, mothership-ds v1.7.0) em vez de crescer em altura —
   quantas colunas couberem numa única linha por página (2 estreito / 3
   a partir de `sm` / 5 quando a tela é larga e baixa ao mesmo tempo).
-  **Clique num projeto abre o PDF completo** por cima da página, mesma
-  exibição de um `Modal` (véu com blur, fecha no X ou clique fora) —
-  `Gallery.onClick` por item, mothership-ds v1.7.0. Links internos do
-  PDF abrindo em nova guia depende do visualizador nativo do navegador
-  (iframe simples, sem visualizador próprio) — comportamento padrão do
-  Chrome/Edge/Firefox/Safari pra PDF incorporado, não testável no
-  ambiente de automação usado neste projeto (Playwright desabilita o
-  visualizador de PDF do Chromium de propósito); confirmar manualmente
-  no site publicado.
+  **Clique num projeto abre o PDF completo** por cima da página, quase
+  em tela cheia (`Modal` `size="full"`, mothership-ds — véu com blur,
+  fecha no X ou clique fora) — `Gallery.onClick` por item, mothership-ds
+  v1.7.0. Links internos do PDF abrindo em nova guia depende do
+  visualizador nativo do navegador (iframe simples, sem visualizador
+  próprio) — comportamento padrão do Chrome/Edge/Firefox/Safari pra PDF
+  incorporado, não testável no ambiente de automação usado neste projeto
+  (Playwright desabilita o visualizador de PDF do Chromium de
+  propósito); confirmar manualmente no site publicado. **Versão mobile
+  própria do PDF** (`public/portfolio-mobile/*-mobile.pdf`, 9 páginas em
+  coluna única/retrato, reformatada pelo Valnez pra leitura confortável
+  em celular sem zoom/scroll horizontal) — servida automaticamente no
+  lugar da desktop quando a tela tem menos de 640px de largura.
 
 ### 5.4 Contato
 - **Título:** "Vamos conversar?"
