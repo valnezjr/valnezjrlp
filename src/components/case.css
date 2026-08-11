@@ -14,6 +14,23 @@
 .case__lista li{display:flex;gap:var(--space-3);align-items:flex-start;}
 .case__galeria{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
                gap:var(--space-4);}
+/* .ms-gallery__item (reaproveitado aqui só pelo visual — vidro, cantos
+   arredondados, borda — mothership-ds) cresce ~3% no hover/active
+   (.ms-gallery__item:hover { transform: scale(1.03) translateY(-4px) }),
+   pensado pra card CLICÁVEL de uma Gallery de verdade. Aqui as fotos do
+   case não são clicáveis (só ilustram o texto), e o crescimento — sem
+   nenhum respiro reservado — ultrapassa a borda de .ms-modal__body
+   (overflow-x: hidden, reserva da barra de rolagem) e corta o item mais
+   próximo da margem. Tentativa inicial reservou espaço com
+   padding+margin negativo (mesma receita de .portfolio-gallery,
+   index.css) — não resolveu: o padding empurra o conteúdo pra dentro,
+   mas a margem negativa da mesma medida devolve a borda do item pro
+   mesmo pixel de antes, cancelando a folga. Como o hover não tem
+   função aqui (não é clique), a correção certa é não crescer: mantém
+   sombra/brilho da borda (feedback visual sutil, sem geometria mudando
+   de tamanho), só neutraliza o transform. */
+.case__galeria .ms-gallery__item:hover,
+.case__galeria .ms-gallery__item:active{transform:none;}
 .case__figura{margin:0;}
 .case__galeria img{width:100%;height:auto;display:block;}
 .case__cta{display:flex;flex-wrap:wrap;gap:var(--space-3);}
