@@ -192,3 +192,21 @@ body.ms-page {
 .portfolio-gallery .ms-gallery__filters { margin-bottom: var(--space-2); }
 .portfolio-gallery .ms-gallery__info { padding: var(--space-3) var(--space-4); }
 .portfolio-gallery .ms-gallery__pager { margin-top: var(--space-2); }
+
+/* Modal do case (Sobre.tsx): size="full" preenche a largura inteira da
+   viewport — necessário quando o modal mostrava um PDF/canvas (decisão
+   #27), mas com o case em HTML (decisão #33) isso deixa as linhas de
+   texto absurdamente compridas em telas largas. Restringe só a LARGURA
+   a partir do desktop (a altura continua 100%, .ms-modal--full, que já
+   funciona bem — o pedido foi só "viewport horizontal menor"). Duas
+   classes (.case-modal.ms-modal--full) têm mais especificidade que a
+   regra da lib (.ms-modal--full sozinha), então vence sem precisar de
+   !important, mesmo com mothership-ds/styles.css carregado depois deste
+   arquivo em main.tsx. min(880px, 100%): mesma largura que .ms-modal--lg
+   já usa pra "diálogo de texto comum" (ver JSDoc de Modal.tsx) — não
+   inventa um valor novo. */
+@media (min-width: 1024px) {
+  .case-modal.ms-modal--full {
+    width: min(880px, 100%);
+  }
+}

@@ -157,10 +157,17 @@ export function Sobre() {
           dismissable por padrão).
 
           size="full" (mothership-ds, upstream) em vez de "lg": feedback
-          direto de que 880px ficava pequeno demais pra ler o case
-          confortavelmente. .ms-modal__body já é flex:1 com overflow-y:
-          auto próprio — não precisa de nada extra do CaseViewer pra
-          rolar.
+          direto de que 880px ficava pequeno demais pra ler o PDF
+          confortavelmente (decisão #27, época do PdfViewer). .ms-modal__body
+          já é flex:1 com overflow-y:auto próprio — não precisa de nada
+          extra do CaseViewer pra rolar.
+
+          className="case-modal" (index.css) restringe a LARGURA de volta
+          pra 880px a partir do desktop, mantendo "full" só na altura —
+          com o case em HTML (decisão #33), a largura total da viewport
+          deixava as linhas de texto compridas demais pra ler; no mobile
+          continua ocupando a tela toda (880px já é ≥100% de qualquer
+          celular). Decisão #35.
 
           CaseViewer (src/components/CaseViewer.tsx) no lugar do antigo
           PdfViewer: mostra a apresentação em HTML do case (pipeline
@@ -168,7 +175,13 @@ export function Sobre() {
           do PDF renderizado em canvas — o PDF passa a ser só download,
           via botão já embutido no próprio HTML do case. Decisão
           registrada em docs/architecture.md § Registro de decisões #33. */}
-      <Modal open={selected != null} onClose={() => setSelected(null)} title={selected?.title} size="full">
+      <Modal
+        open={selected != null}
+        onClose={() => setSelected(null)}
+        title={selected?.title}
+        size="full"
+        className="case-modal"
+      >
         {selected && (
           <Suspense fallback={<CaseViewerFallback />}>
             <CaseViewer key={selected.file} file={selected.file} title={selected.title} />
