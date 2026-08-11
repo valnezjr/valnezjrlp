@@ -1,0 +1,38 @@
+<article class="case" data-slug="11-dev-mothership-ds">
+  <header class="case__hero">
+    <span class="ms-badge ms-badge--accent">Development</span>
+    <h1 class="ms-hero__title">Mothership DS</h1>
+    <p class="ms-hero__subtitle">Design system próprio em React, aberto ao público via GitHub</p>
+    <div class="case__selos"><span class='ms-badge'>Design System</span><span class='ms-badge'>React</span><span class='ms-badge'>TypeScript</span><span class='ms-badge'>Tokens</span><span class='ms-badge'>Open source</span><span class='ms-badge'>Acessibilidade</span></div>
+  </header>
+
+  <dl class="case__meta">
+    <div><dt class="ms-stat__label">Papel</dt><dd class="ms-text-sm">Design System · Design e Desenvolvimento</dd></div>
+    <div><dt class="ms-stat__label">Plataforma</dt><dd class="ms-text-sm">Biblioteca React + TypeScript</dd></div>
+    <div><dt class="ms-stat__label">Ferramentas</dt><dd class="ms-text-sm">React, TypeScript e CSS puro</dd></div>
+  </dl>
+
+  <section class="case__secao"><h2 class="ms-h2">Visão geral</h2>
+    <p>Mothership DS é o design system que uso nos meus projetos pessoais, publicado abertamente no GitHub. São cerca de cinquenta componentes em React e TypeScript, com estética glassmorphism, temas claro e escuro e fundo animado — tudo em CSS e SVG puros, sem nenhuma dependência de runtime além do próprio React.</p></section>
+  <section class="case__secao"><h2 class="ms-h2">O desafio</h2>
+    <p class="ms-text-muted">Manter consistência entre projetos pessoais sem recomeçar do zero a cada um. O sistema precisava ser bonito o bastante para eu querer usar, rígido o bastante para garantir consistência, e leve o bastante para não pesar em projeto pequeno. Sendo público, precisava também ser compreensível por quem não participou da construção.</p></section>
+  <section class="case__secao"><h2 class="ms-h2">A solução</h2>
+    <p>A regra fundadora é curta e vale para todo o sistema: nenhum componente escreve um valor bruto — nem 15px, nem #00afef. Tudo vem de variável CSS. Isso transforma troca de tema em troca de tokens, não em reescrita de componente. Sobre essa base montei escalas de tipografia, espaçamento e raio, e oito famílias de cor com escala de 100 a 900. Três delas — accent, pink e orange — são as paradas exatas do gradiente do logotipo da marca; as outras cinco foram harmonizadas a partir dessas, para completar a paleta sem destoar. O styleguide é gerado a partir do próprio código: cada bloco da documentação renderiza o componente real importado da biblioteca, o que torna impossível a documentação divergir da implementação.</p></section>
+
+  <section class="case__secao"><h2 class="ms-h2">Destaques de design</h2>
+    <div class="case__cards"><div class='ms-card'><div class='ms-h3'>Zero valores hardcoded</div><p class='ms-text-sm ms-text-muted'>Nenhum componente escreve 15px ou #00afef; tudo vem de token. Trocar tema é trocar tokens.</p></div><div class='ms-card'><div class='ms-h3'>Paleta extraída da marca</div><p class='ms-text-sm ms-text-muted'>Accent, pink e orange são as paradas exatas do gradiente do logotipo; as outras cinco foram harmonizadas a partir delas.</p></div><div class='ms-card'><div class='ms-h3'>Documentação que não mente</div><p class='ms-text-sm ms-text-muted'>Cada bloco do styleguide renderiza o componente real importado da biblioteca.</p></div><div class='ms-card'><div class='ms-h3'>Sem dependência de runtime</div><p class='ms-text-sm ms-text-muted'>Glassmorphism, fundo animado e ícones em CSS e SVG puros — só React como dependência.</p></div></div></section>
+
+  <section class="case__secao"><h2 class="ms-h2">Anatomia do projeto</h2><ol class="case__lista"><li><span class='ms-badge ms-badge--accent'>01</span><div><strong>Camada de tokens</strong><p class='ms-text-sm ms-text-muted'>Tipografia, espaçamento de 4 a 56px, raios, blur de vidro e transições, todos em variáveis CSS.</p></div></li><li><span class='ms-badge ms-badge--accent'>02</span><div><strong>Cores semânticas</strong><p class='ms-text-sm ms-text-muted'>Texto, texto secundário, borda, superfície e hover mudam com o tema; as cores de marca permanecem fixas.</p></div></li><li><span class='ms-badge ms-badge--accent'>03</span><div><strong>Oito famílias de marca</strong><p class='ms-text-sm ms-text-muted'>Accent, highlight, success, danger, violet, pink, orange e gray, cada uma com escala de 100 a 900 e versão soft.</p></div></li><li><span class='ms-badge ms-badge--accent'>04</span><div><strong>Temas claro e escuro</strong><p class='ms-text-sm ms-text-muted'>Alternância por switch na navbar, resolvida inteiramente na camada de tokens.</p></div></li><li><span class='ms-badge ms-badge--accent'>05</span><div><strong>Cerca de 50 componentes</strong><p class='ms-text-sm ms-text-muted'>De loader e splash a navbar, sidebar, breadcrumbs, paginação, botões e listas de link.</p></div></li><li><span class='ms-badge ms-badge--accent'>06</span><div><strong>Styleguide vivo</strong><p class='ms-text-sm ms-text-muted'>Publicado no GitHub Pages, renderizando os componentes reais da biblioteca a cada versão.</p></div></li></ol></section>
+
+  <section class="case__secao"><h2 class="ms-h2">Galeria</h2><div class="case__galeria"><figure class='case__figura'><div class='ms-gallery__item'><img src='__CASE_IMG_BASE__11-dev-mothership-ds-01.jpg' alt='Cores semânticas e as oito famílias de marca' loading='lazy'></div><figcaption class='ms-gallery__caption'>Cores semânticas e as oito famílias de marca</figcaption></figure><figure class='case__figura'><div class='ms-gallery__item'><img src='__CASE_IMG_BASE__11-dev-mothership-ds-02.jpg' alt='Escalas de 100 a 900 nas oito famílias' loading='lazy'></div><figcaption class='ms-gallery__caption'>Escalas de 100 a 900 nas oito famílias</figcaption></figure><figure class='case__figura'><div class='ms-gallery__item'><img src='__CASE_IMG_BASE__11-dev-mothership-ds-03.jpg' alt='Componente de botão renderizado a partir da biblioteca' loading='lazy'></div><figcaption class='ms-gallery__caption'>Componente de botão renderizado a partir da biblioteca</figcaption></figure></div></section>
+
+  <section class="case__secao"><h2 class="ms-h2">Entregáveis</h2>
+    <ul class="case__lista"><li><span class='ms-badge ms-badge--accent'>&#10003;</span><span>Cerca de 50 componentes React + TypeScript</span></li><li><span class='ms-badge ms-badge--accent'>&#10003;</span><span>Camada de tokens em CSS</span></li><li><span class='ms-badge ms-badge--accent'>&#10003;</span><span>Temas claro e escuro</span></li><li><span class='ms-badge ms-badge--accent'>&#10003;</span><span>Styleguide público gerado automaticamente</span></li><li><span class='ms-badge ms-badge--accent'>&#10003;</span><span>Documentação de tokens, arquitetura e acessibilidade</span></li><li><span class='ms-badge ms-badge--accent'>&#10003;</span><span>Exemplo de aplicação em Next.js</span></li></ul></section>
+
+  <footer class="case__cta">
+    <a class="ms-button ms-button--solid" href="https://valnezjr.github.io/mothership-ds/" target="_blank" rel="noopener noreferrer">
+      Ver styleguide</a>
+    <a class="ms-button ms-button--ghost" href="__CASE_PDF_HREF__" download>
+      Baixar PDF</a>
+  </footer>
+</article>

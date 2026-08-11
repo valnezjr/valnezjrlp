@@ -12,6 +12,12 @@ dist
 dist-ssr
 *.local
 
+# Material de origem do pipeline de cases do portfólio (PDFs novos +
+# workspace com build.py/imagens brutas/HTMLs) — só os artefatos
+# derivados (public/portfolio*, public/portfolio-case/) são versionados.
+# docs/architecture.md § Registro de decisões #34.
+catalogo/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

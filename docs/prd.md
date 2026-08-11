@@ -70,20 +70,30 @@ Divulgar os serviços de Valnez Júnior, Designer Engineer, e converter visitant
   (`itemsPerPage`, mothership-ds v1.7.0) em vez de crescer em altura —
   quantas colunas couberem numa única linha por página (2 estreito / 3
   a partir de `sm` / 5 quando a tela é larga e baixa ao mesmo tempo).
-  **Clique num projeto abre o PDF completo** por cima da página, quase
-  em tela cheia (`Modal` `size="full"`, mothership-ds — véu com blur,
-  fecha no X ou clique fora) — `Gallery.onClick` por item, mothership-ds
-  v1.7.0. PDF renderizado por um visualizador próprio (`PdfViewer`,
-  `src/components/PdfViewer.tsx`, via `pdfjs-dist`, carregado sob
-  demanda com `React.lazy`) — cada página em `<canvas>`, com os links do
-  PDF sempre abrindo em nova guia (`target="_blank"`), garantido em
-  qualquer navegador/dispositivo, não mais dependente do visualizador
-  nativo do navegador (que não existe dentro de `<iframe>` no Chrome
-  Android). **Versão mobile própria do PDF**
-  (`public/portfolio-mobile/*-mobile.pdf`, 9 páginas em coluna
+  **Clique num projeto abre a apresentação do case** por cima da
+  página, quase em tela cheia (`Modal` `size="full"`, mothership-ds —
+  véu com blur, fecha no X ou clique fora) — `Gallery.onClick` por
+  item, mothership-ds v1.7.0. A apresentação é **HTML** (não mais o PDF
+  renderizado em canvas — decisão de 2026-08-10, ver `docs/architecture.md`
+  § Registro de decisões #33): um fragmento por projeto, gerado pelo
+  pipeline próprio de Valnez (pasta de trabalho `catalogo/`, fora do
+  git) e servido estático em `public/portfolio-case/{slug}.html`,
+  buscado sob demanda (`CaseViewer`, `src/components/CaseViewer.tsx`,
+  `React.lazy`) e injetado na página. **O PDF passa a ser só para
+  download** — o próprio HTML do case já termina com um botão "Baixar
+  PDF", que escolhe a versão desktop ou mobile conforme a largura da
+  tela (mesmo corte de 640px de sempre). **Versão mobile própria do
+  PDF** (`public/portfolio-mobile/*-mobile.pdf`, 9 páginas em coluna
   única/retrato, reformatada pelo Valnez pra leitura confortável em
-  celular sem zoom/scroll horizontal) — servida automaticamente no
-  lugar da desktop quando a tela tem menos de 640px de largura.
+  celular sem zoom/scroll horizontal) continua existindo, só que
+  exclusivamente para esse download — não é mais renderizada na tela.
+
+> **`[PENDENTE]`** — o material de 2026-08-10 trouxe também um PDF índice
+> do portfólio inteiro (`00-Portfolio-Indice.pdf`/`-mobile`, já copiado
+> pra `public/portfolio(-mobile)/`), sem relação com nenhum projeto
+> específico. Copiado mas **sem link/botão em nenhum lugar da UI ainda**
+> — falta decidir se/onde expor (ex.: um "baixar portfólio completo"
+> perto do cabeçalho da seção Sobre).
 
 ### 5.4 Contato
 - **Título:** "Vamos conversar?"

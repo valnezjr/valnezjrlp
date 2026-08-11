@@ -1,0 +1,23 @@
+/* Layout do case — só posicionamento. A aparência vem do Mothership DS. */
+.case{display:flex;flex-direction:column;gap:var(--space-7);}
+.case__hero{display:flex;flex-direction:column;gap:var(--space-4);align-items:flex-start;}
+.case__selos{display:flex;flex-wrap:wrap;gap:var(--space-2);}
+.case__meta{display:flex;flex-wrap:wrap;gap:var(--space-6);margin:0;}
+.case__meta div{display:flex;flex-direction:column;gap:var(--space-1);}
+.case__meta dd{margin:0;}
+.case__secao{display:flex;flex-direction:column;gap:var(--space-4);}
+.case__cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+             gap:var(--space-4);}
+.case__cards .ms-card{display:flex;flex-direction:column;gap:var(--space-2);}
+.case__lista{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;
+             gap:var(--space-4);}
+.case__lista li{display:flex;gap:var(--space-3);align-items:flex-start;}
+.case__galeria{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+               gap:var(--space-4);}
+.case__figura{margin:0;}
+.case__galeria img{width:100%;height:auto;display:block;}
+.case__cta{display:flex;flex-wrap:wrap;gap:var(--space-3);}
+@media (max-width:720px){
+  .case{gap:var(--space-6);}
+  .case__hero .ms-hero__title{font-size:var(--text-2xl);line-height:40px;}
+}

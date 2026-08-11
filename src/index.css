@@ -104,9 +104,25 @@ body.ms-page {
   flex: 0 0 auto;
 }
 
+/* O hover/active da lib (`.ms-gallery__item:hover`) aplica
+   `translateY(-4px) scale(1.03)` — sem folga, esse deslocamento
+   ultrapassa a caixa do grid e `overflow-y: auto` (que sem
+   `overflow-x` explícito vira `auto` nos dois eixos, por spec) corta o
+   anel de brilho do hover e, pior, às vezes faz a barra de rolagem
+   aparecer só por causa do card crescido no hover (não porque o
+   conteúdo real precisa rolar). `padding` reserva espaço pro
+   crescimento do hover não encostar na borda que corta; `overflow-x:
+   hidden` (não `auto`) impede a barra horizontal que o `auto` do eixo Y
+   cria sozinho. */
 .portfolio-gallery .ms-gallery__grid {
   flex: 1 1 auto;
   min-height: 0;
+  /* Assimétrico de propósito: o hover só sobe (`translateY(-4px)`) e
+     cresce a partir do centro (`scale(1.03)`) — o topo precisa de mais
+     folga (~10px) que a base (~2px), então gastar o mínimo de espaço
+     embaixo deixa mais telas passando sem precisar da rolagem interna. */
+  padding: var(--space-3) var(--space-2) var(--space-1);
+  overflow-x: hidden;
   overflow-y: auto;
 }
 
@@ -121,6 +137,8 @@ body.ms-page {
 
   .portfolio-gallery .ms-gallery__grid {
     grid-template-columns: repeat(3, 1fr);
+    padding: 0;
+    overflow-x: visible;
     overflow-y: visible;
   }
 

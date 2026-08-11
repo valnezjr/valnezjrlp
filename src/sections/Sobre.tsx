@@ -1,13 +1,14 @@
 import { lazy, Suspense, useEffect, useState } from "react";
 import { Avatar, Gallery, Loader, Modal, type GalleryCategory, type GalleryItem } from "mothership-ds";
 import { SectionShell } from "@/components/SectionShell";
+import { BASE } from "@/lib/portfolio";
 
-// pdfjs-dist (usado só dentro de PdfViewer) é pesado — carregado de
-// verdade só empurraria ~200KB gzip pro bundle principal, baixados por
-// toda visita ao site, mesmo por quem nunca abre um projeto. lazy()
-// isola PdfViewer (e a lib inteira que ele importa) num chunk próprio,
-// buscado só no clique real que abre o Modal.
-const PdfViewer = lazy(() => import("@/components/PdfViewer").then((m) => ({ default: m.PdfViewer })));
+// CaseViewer busca um fragmento HTML (poucos KB) por trás de fetch, não
+// pdf.js — bem mais leve que o antigo PdfViewer, mas ainda assim lazy():
+// isola o componente (e o case.css que ele importa) num chunk próprio,
+// buscado só no clique real que abre o Modal, não em toda visita ao
+// site. Ver docs/architecture.md § Registro de decisões #33.
+const CaseViewer = lazy(() => import("@/components/CaseViewer").then((m) => ({ default: m.CaseViewer })));
 
 // docs/prd.md §5.3 — apresentação (parágrafo abaixo do "Sobre") já é
 // texto final, revisado como copy em 2026-08-06 (segunda rodada:
@@ -52,24 +53,6 @@ const PROJECTS: Project[] = [
   { file: "13-id-blooming-acessorios", title: "Blooming Acessórios", description: "Branding para marca de acessórios femininos.", category: "brand" },
   { file: "14-id-andre-azevedo", title: "André Azevedo Nutricionista", description: "Branding para marca pessoal de nutricionista.", category: "brand" },
 ];
-
-// import.meta.env.BASE_URL: "/" no dev, "/valnezjrlp/" em produção
-// (vite.config.ts — GitHub Pages de projeto serve sob subpasta). Sem
-// isso os PDFs/thumbs quebrariam só no ar, nunca localmente.
-const BASE = import.meta.env.BASE_URL;
-
-// public/portfolio-mobile/*.pdf — versão de cada case reformatada em
-// coluna única (retrato, 9 páginas em vez de 6) pra leitura confortável
-// em tela de celular, sem precisar dar zoom/scroll horizontal no PDF
-// desktop. Mesmo `file` dos projetos (PROJECTS), só com sufixo
-// "-mobile". `<640px` é o mesmo corte que o resto do arquivo já usa pra
-// "estreito" (useItemsPerPage) — sem hook/estado próprio porque só
-// importa no instante em que o Modal abre, não precisa reagir a resize
-// com o Modal já aberto.
-function pdfUrlFor(file: string): string {
-  const mobile = typeof window !== "undefined" && window.matchMedia("(max-width: 639px)").matches;
-  return mobile ? `${BASE}portfolio-mobile/${file}-mobile.pdf` : `${BASE}portfolio/${file}.pdf`;
-}
 
 // Gallery (mothership-ds v1.7.0) com itemsPerPage: paginação nativa em
 // vez de crescer em altura, sem abrir mão de filtro/badges/cores de
@@ -118,10 +101,10 @@ function useItemsPerPage() {
   return itemsPerPage;
 }
 
-// Mesmo visual do carregamento que o próprio PdfViewer usa por dentro
-// (var(--space-5) etc.) — cobre a fase anterior a essa, quando o chunk
-// do PdfViewer (e do pdfjs-dist que ele importa) ainda nem chegou.
-function PdfViewerFallback() {
+// Cobre a fase anterior ao CaseViewer aparecer: só o chunk (JS + case.css)
+// ainda não chegou — o próprio CaseViewer tem um Loader interno pro fetch
+// do HTML do case, essa é a etapa antes disso.
+function CaseViewerFallback() {
   return (
     <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%" }}>
       <Loader label="Carregando visualizador…" />
@@ -132,7 +115,7 @@ function PdfViewerFallback() {
 export function Sobre() {
   const itemsPerPage = useItemsPerPage();
   // Fica com o último projeto durante o fade de saída do Modal (só
-  // `open` vira false) — limpar junto cortaria o PDF no meio da
+  // `open` vira false) — limpar junto cortaria o case no meio da
   // animação, mesmo padrão já usado em Servicos.tsx.
   const [selected, setSelected] = useState<Project | null>(null);
 
@@ -168,28 +151,27 @@ export function Sobre() {
         />
       </div>
 
-      {/* Gallery.onClick (mothership-ds v1.7.0) abre o case completo (o
-          PDF) por cima da página, mesma exibição de qualquer Modal —
-          véu com blur, fecha no X ou clique fora (Modal já faz isso
-          sozinho, dismissable por padrão). Pedido direto: abrir o PDF
-          "parecido com os modais", não um viewer/rota nova.
+      {/* Gallery.onClick (mothership-ds v1.7.0) abre o case completo por
+          cima da página, mesma exibição de qualquer Modal — véu com
+          blur, fecha no X ou clique fora (Modal já faz isso sozinho,
+          dismissable por padrão).
 
           size="full" (mothership-ds, upstream) em vez de "lg": feedback
-          direto de que 880px ficava pequeno demais pra ler o PDF
-          confortavelmente. .ms-modal__body já é flex:1 — com "full"
-          dando height:100% ao Modal, o PdfViewer com height:100%
-          preenche o espaço de verdade (quase toda a viewport).
+          direto de que 880px ficava pequeno demais pra ler o case
+          confortavelmente. .ms-modal__body já é flex:1 com overflow-y:
+          auto próprio — não precisa de nada extra do CaseViewer pra
+          rolar.
 
-          PdfViewer (src/components/PdfViewer.tsx) no lugar de
-          <iframe src={pdfUrl}>: o iframe dependia do visualizador
-          nativo de PDF do navegador, que não existe dentro de iframe no
-          Chrome Android (e não só lá) — caía num botão de "baixar o
-          arquivo" em vez de mostrar o PDF. Decisão registrada em
-          docs/architecture.md. */}
+          CaseViewer (src/components/CaseViewer.tsx) no lugar do antigo
+          PdfViewer: mostra a apresentação em HTML do case (pipeline
+          própria de Valnez, catalogo/ → public/portfolio-case/) em vez
+          do PDF renderizado em canvas — o PDF passa a ser só download,
+          via botão já embutido no próprio HTML do case. Decisão
+          registrada em docs/architecture.md § Registro de decisões #33. */}
       <Modal open={selected != null} onClose={() => setSelected(null)} title={selected?.title} size="full">
         {selected && (
-          <Suspense fallback={<PdfViewerFallback />}>
-            <PdfViewer key={selected.file} src={pdfUrlFor(selected.file)} title={selected.title} />
+          <Suspense fallback={<CaseViewerFallback />}>
+            <CaseViewer key={selected.file} file={selected.file} title={selected.title} />
           </Suspense>
         )}
       </Modal>
