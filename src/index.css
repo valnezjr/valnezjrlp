@@ -33,6 +33,62 @@ body.ms-page {
   min-height: 0;
 }
 
+/* ============================================================
+   Hover-lift do mothership-ds — regra permanente, architecture.md § 37.
+
+   .ms-gallery__item e .ms-hover-edge (e qualquer componente futuro que
+   use o mesmo mecanismo — procure por --ms-edge- ou translateY(...)
+   scale(...) no :hover de node_modules/mothership-ds) crescem no
+   hover/active (translateY(-4px) scale(1.03), o "bounce" físico do
+   design system). Sem respiro reservado, esse crescimento ultrapassa
+   QUALQUER ancestral com overflow:hidden — inclusive overflow-y:auto
+   sozinho, que vira overflow-x:hidden por spec no eixo que você não
+   pediu — e corta a borda do item mais próximo da margem. Já bateu
+   nisso duas vezes neste projeto antes de virar regra (decisões #22 e
+   #36) — as duas classes abaixo são o "resolver uma vez, reaproveitar
+   sempre". Ao colocar QUALQUER elemento com esse hover dentro de um
+   container que clipa, escolha uma das duas — nunca deixe sem nenhuma:
+
+   .hover-lift-room  no ANCESTRAL que clipa — quando o item É clicável
+                      de verdade e o efeito precisa continuar existindo
+                      (dá o feedback físico de "isso responde a
+                      clique"). --hover-lift-gap é ajustável por uso
+                      (padrão var(--space-3), 12px — cobre um
+                      scale(1.03) em itens de até ~800px de largura).
+                      ⚠️ NUNCA combine com margin negativo do mesmo
+                      valor no mesmo elemento pra tentar realinhar
+                      visualmente com irmãos sem esse respiro — os dois
+                      se cancelam e o corte volta (foi exatamente o erro
+                      cometido a caminho da decisão #36, antes de achar
+                      a causa raiz). Se precisar desse realinhamento,
+                      aplique a margem negativa num wrapper diferente do
+                      que recebe o padding.
+
+   .hover-lift-off    no próprio ITEM — quando ele NÃO é clicável (uso
+                       puramente visual das classes da lib, ex.: fotos
+                       ilustrativas em case.css). Preferível a reservar
+                       espaço quando dá: um card que "levanta" sem fazer
+                       nada ao clique é affordance enganosa, não só bug
+                       visual — mata só o transform, mantém sombra/
+                       brilho de borda como feedback sutil.
+   ============================================================ */
+.hover-lift-room {
+  --hover-lift-gap: var(--space-3);
+  padding-inline: var(--hover-lift-gap);
+  overflow-x: hidden;
+}
+.hover-lift-off:hover,
+.hover-lift-off:active,
+/* .case__galeria (case.css, Sobre.tsx → CaseViewer): fotos do case não
+   são clicáveis — HTML gerado fora deste repo (catalogo/, pipeline
+   externa), por isso o seletor por contexto aqui em vez da classe
+   .hover-lift-off direto no markup (a pipeline não sabe dessa
+   convenção; o CSS sim). */
+.case__galeria .ms-gallery__item:hover,
+.case__galeria .ms-gallery__item:active {
+  transform: none;
+}
+
 /* Transição entre seções — architecture.md §5. Keyframes (não
    transition) porque o fade-in precisa começar de um estado inicial
    definido (opacidade 0, 8px abaixo) no exato frame em que a seção
@@ -104,7 +160,12 @@ body.ms-page {
   flex: 0 0 auto;
 }
 
-/* O hover/active da lib (`.ms-gallery__item:hover`) aplica
+/* Exemplo aplicado da regra "Hover-lift do mothership-ds" (§ acima,
+   architecture.md § 37/#22) — este grid é clicável de verdade
+   (abre o Modal do case), então a estratégia certa é reservar
+   respiro, não `.hover-lift-off`. Não usa a classe genérica
+   `.hover-lift-room` porque precisa de mais nuance que ela cobre: o
+   hover/active da lib (`.ms-gallery__item:hover`) aplica
    `translateY(-4px) scale(1.03)` — sem folga, esse deslocamento
    ultrapassa a caixa do grid e `overflow-y: auto` (que sem
    `overflow-x` explícito vira `auto` nos dois eixos, por spec) corta o
