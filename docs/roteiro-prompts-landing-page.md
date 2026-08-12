@@ -212,7 +212,16 @@ de decisões e o styleguide publicado em valnezjr.github.io/mothership-ds/).
   definitivo.
 - **Indicador de navegação:** `Adicione dots/indicador discreto na lateral ou rodapé mostrando qual das 4 seções está ativa, clicáveis.`
 - **Navegação por roda do mouse:** `Adicione troca de seção via scroll do mouse (com debounce para trocar apenas uma seção por gesto), mantendo o fade.`
-- **SEO/Open Graph:** `Adicione meta tags Open Graph e favicon para compartilhamento em redes sociais.`
+- ~~**SEO/Open Graph:** `Adicione meta tags Open Graph e favicon para compartilhamento em redes sociais.`~~
+  Feito: `title`/`meta description` reaproveitando a proposta de valor do
+  `prd.md` §3 (texto já aprovado, não inventado), `og:*`/`twitter:*`
+  completos (`index.html`) e `public/og-image.png` (1200×630, screenshot
+  real do Hero via Playwright — não peça de design própria; trocar por
+  arte dedicada é melhoria válida pra depois). Favicon já existia
+  (`favicon.svg`). `og:url`/`og:image` apontam pro preview de
+  desenvolvimento (única URL que existe hoje) — **atualizar as duas**
+  junto quando o domínio final entrar no ar. Decisão registrada em
+  `architecture.md` § Registro de decisões.
 
 ---
 

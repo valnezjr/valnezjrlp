@@ -4,7 +4,54 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>valnezjr</title>
+    <!-- Valor de --bg-base do tema escuro (mothership-ds tokens.css) —
+         não dá pra referenciar a CSS custom property aqui (meta tag é
+         HTML estático, lido pelo navegador antes de qualquer CSS
+         carregar), então é o único hex hardcoded aceitável neste
+         projeto (CLAUDE.md), e mesmo assim copiado do token real, não
+         inventado. Cor da UI do navegador (barra de endereço mobile),
+         não da página. -->
+    <meta name="theme-color" content="#111114" />
+
+    <title>valnezjr — Designer Engineer</title>
+    <!-- Texto reaproveitado de docs/prd.md §3 (proposta de valor já
+         aprovada) — não inventado aqui. -->
+    <meta
+      name="description"
+      content="Do componente ao sistema, dos tokens à identidade visual finalizada — projeto completo, acessível e de qualidade para a sua marca."
+    />
+
+    <!-- Open Graph / Twitter Card — preview ao compartilhar o link
+         (WhatsApp, Instagram, LinkedIn etc.). og:url e og:image usam a
+         URL do preview de desenvolvimento (GitHub Pages, README §
+         "Preview de desenvolvimento") porque é a única que existe hoje;
+         ATUALIZAR as duas junto quando o domínio final entrar no ar
+         (docs/architecture.md § Registro de decisões). og-image.png:
+         screenshot real do Hero (1200×630, tamanho padrão de OG),
+         gerado via Playwright — não uma peça de design própria; trocar
+         por uma arte dedicada é uma melhoria válida pra depois, sem
+         bloquear o lançamento. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="valnezjr" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:url" content="https://valnezjr.github.io/valnezjrlp/" />
+    <meta property="og:title" content="valnezjr — Designer Engineer" />
+    <meta
+      property="og:description"
+      content="Do componente ao sistema, dos tokens à identidade visual finalizada — projeto completo, acessível e de qualidade para a sua marca."
+    />
+    <meta property="og:image" content="https://valnezjr.github.io/valnezjrlp/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="valnezjr — Designer Engineer" />
+    <meta
+      name="twitter:description"
+      content="Do componente ao sistema, dos tokens à identidade visual finalizada — projeto completo, acessível e de qualidade para a sua marca."
+    />
+    <meta name="twitter:image" content="https://valnezjr.github.io/valnezjrlp/og-image.png" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
