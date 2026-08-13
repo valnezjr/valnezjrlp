@@ -271,3 +271,76 @@ body.ms-page {
     width: min(880px, 100%);
   }
 }
+
+/* SkillsMarquees (Sobre.tsx) — duas faixas de Marquee (mothership-ds)
+   com Badge (competências e ferramentas, docs/architecture.md § 39).
+   .ms-badge já é display:inline-flex + align-items:center + gap
+   (components.css) — só falta o tamanho fixo do ícone de cada
+   ferramenta, injetado via dangerouslySetInnerHTML (SVG cru, sem
+   width/height próprios: preenche o quadrado de 16px por CSS). Ícones
+   monocromáticos (CorelDRAW, Penpot — sem marca colorida real
+   disponível, ver decisão #39) usam currentColor no próprio arquivo
+   .svg, herdando var(--color-text) do Badge sem CSS extra aqui. */
+.tool-badge__icon {
+  display: inline-flex;
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+.tool-badge__icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Compacta a seção Sobre (architecture.md §4 — nunca scroll, sempre
+   apertado nas alturas mais baixas testadas) tem que abrir espaço pras
+   duas faixas novas sem estourar viewport: fonte reduzida do Badge
+   (.ms-badge usa --text-xs por padrão, aqui um degrau abaixo) e padding
+   vertical mais magro, só dentro do escopo do .skills-marquees — não
+   mexe em nenhum outro uso de Badge/Marquee do site. */
+.skills-marquees .ms-badge {
+  padding-block: 1px;
+  font-size: 10px;
+}
+
+/* As duas faixas de SkillsMarquees não existiam quando a seção Sobre já
+   tinha zero de sobra na altura mais baixa testada (1366×600, ~464px
+   úteis — architecture.md §4/decisão #7). Adicionar as faixas sem
+   compensar em nada estourava ~19px nessa mesma altura (medido,
+   Playwright). Mesmo limiar de "curto" que useItemsPerPage já usa
+   (Sobre.tsx, max-height: 700px) — não inventa um segundo número mágico
+   — aperta só os respiros (gap e entrelinha), nunca o tamanho de fonte
+   abaixo de 10px (já é o piso de legibilidade aceito nesta seção,
+   decisão #39): tira ~26px, sobra ~7px de folga em 600px de altura. */
+@media (max-height: 700px) {
+  .sobre-content {
+    gap: 0;
+  }
+  .sobre-intro {
+    gap: 0;
+  }
+  .skills-marquees {
+    gap: 0;
+  }
+  .skills-marquees .ms-badge {
+    line-height: 1;
+    padding-block: 0;
+  }
+  .tool-badge__icon {
+    width: 10px;
+    height: 10px;
+  }
+  /* Avatar decorativo (iniciais "VJ", ainda placeholder — prd.md §5.3)
+     é o que sobra mais fácil de ceder nas alturas mais curtas: 48px
+     (--sm, tamanho já mínimo da lib) ainda não fechava a conta sozinho
+     com os cortes acima. 32px continua reconhecível como avatar redondo
+     — só encolhe aqui, não em nenhum outro lugar que usa Avatar. */
+  .sobre-intro .ms-avatar {
+    width: 32px;
+    height: 32px;
+  }
+  .sobre-intro .ms-avatar--placeholder {
+    font-size: 11px;
+  }
+}

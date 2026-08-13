@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useState } from "react";
 import { Avatar, Gallery, Loader, Modal, type GalleryCategory, type GalleryItem } from "mothership-ds";
 import { SectionShell } from "@/components/SectionShell";
+import { SkillsMarquees } from "@/components/SkillsMarquees";
 import { BASE } from "@/lib/portfolio";
 
 // CaseViewer busca um fragmento HTML (poucos KB) por trás de fetch, não
@@ -18,8 +19,8 @@ const CaseViewer = lazy(() => import("@/components/CaseViewer").then((m) => ({ d
 // decisão #7) sem perder os fatos centrais (desde quando,
 // especialização, quem atende); max-w-[480px] sm:max-w-[620px] dá mais
 // largura a partir de sm especificamente pra 1366×600 não quebrar numa
-// 3ª linha. Competências (badges) continuam [PENDENTE] — falta o
-// conteúdo real de Valnez.
+// 3ª linha. Competências (badges, SkillsMarquees.tsx) preenchidas com o
+// conteúdo real de Valnez em 2026-08-12 — deixa de ser [PENDENTE].
 const CATEGORIES: GalleryCategory[] = [
   { key: "digital", label: "Digital Design", tone: "accent" },
   { key: "brand", label: "Brand Design", tone: "highlight" },
@@ -129,8 +130,8 @@ export function Sobre() {
 
   return (
     <SectionShell>
-      <div className="flex h-full w-full max-w-4xl flex-col items-center gap-1 sm:h-auto sm:gap-2">
-        <div className="flex shrink-0 flex-col items-center gap-0.5 text-center sm:gap-1">
+      <div className="sobre-content flex h-full w-full max-w-4xl flex-col items-center gap-1 sm:h-auto">
+        <div className="sobre-intro flex shrink-0 flex-col items-center gap-0.5 text-center sm:gap-1">
           <Avatar size="sm" initials="VJ" alt="Valnez Júnior" />
           <div>
             <h1 className="ms-h2" style={{ marginBottom: 0 }}>
@@ -142,6 +143,8 @@ export function Sobre() {
             </p>
           </div>
         </div>
+
+        <SkillsMarquees />
 
         <Gallery
           className="portfolio-gallery w-full min-h-0 flex-1 sm:flex-none"

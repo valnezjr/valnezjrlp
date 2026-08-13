@@ -57,7 +57,19 @@ Divulgar os serviços de Valnez Júnior, Designer Engineer, e converter visitant
   médios negócios. Vamos produzir juntos?" (copy final, 2026-08-06 —
   revisado pra não soar exclusivo a startups). Foto (`Avatar`, ainda
   placeholder — só iniciais "VJ") + parágrafo breve, no topo.
-- **Competências (badges):** _[PENDENTE]_
+- **Competências (badges):** Brand Design, UI/UX Design, Diagramação e
+  Prototipação, Product Design, Front-end (conteúdo real enviado por
+  Valnez, 2026-08-12). Exibidas num `Marquee` (mothership-ds) de rolagem
+  horizontal contínua, não numa lista estática — pedido direto.
+- **Ferramentas:** um segundo `Marquee`, logo abaixo do de competências,
+  com logo + nome de cada ferramenta (pedido direto, fora do desenho
+  original desta seção): Figma, Illustrator, Photoshop, Canva,
+  CorelDRAW, Affinity Designer, e as alternativas open source Penpot
+  (Figma), Inkscape (Illustrator/CorelDRAW) e GIMP (Photoshop). Logos
+  reais baixadas uma vez e versionadas em `src/assets/tool-logos/` (não
+  CDN em runtime — mesmo princípio da decisão de portfólio estático, §5.3
+  abaixo) — fontes e licenças por arquivo em `docs/architecture.md` §
+  Registro de decisões #39.
 - **Projetos:** 14 projetos reais (`public/portfolio/*.pdf` — case
   studies de 6 páginas cada, um por projeto; copy de título/descrição
   extraída dos próprios PDFs), portfólio estático (decisão de
