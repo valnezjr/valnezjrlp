@@ -64,12 +64,15 @@ Divulgar os serviços de Valnez Júnior, Designer Engineer, e converter visitant
 - **Ferramentas:** um segundo `Marquee`, logo abaixo do de competências,
   com logo + nome de cada ferramenta (pedido direto, fora do desenho
   original desta seção): Figma, Illustrator, Photoshop, Canva,
-  CorelDRAW, Affinity Designer, e as alternativas open source Penpot
-  (Figma), Inkscape (Illustrator/CorelDRAW) e GIMP (Photoshop). Logos
-  reais baixadas uma vez e versionadas em `src/assets/tool-logos/` (não
-  CDN em runtime — mesmo princípio da decisão de portfólio estático, §5.3
-  abaixo) — fontes e licenças por arquivo em `docs/architecture.md` §
-  Registro de decisões #39.
+  CorelDRAW, Affinity, e as alternativas open source Penpot (Figma),
+  Inkscape (Illustrator/CorelDRAW) e GIMP (Photoshop). "Affinity" (não
+  mais "Affinity Designer") porque a Serif/Canva unificou Designer,
+  Photo e Publisher num único app em out/2025 — marca e nome atualizados
+  em 2026-08-13, ver `docs/architecture.md` § Registro de decisões #41.
+  Logos reais baixadas uma vez e versionadas em `src/assets/tool-logos/`
+  (não CDN em runtime — mesmo princípio da decisão de portfólio
+  estático, §5.3 abaixo) — fontes e licenças por arquivo em
+  `docs/architecture.md` § Registro de decisões #39.
 - **Projetos:** 14 projetos reais (`public/portfolio/*.pdf` — case
   studies de 6 páginas cada, um por projeto; copy de título/descrição
   extraída dos próprios PDFs), portfólio estático (decisão de

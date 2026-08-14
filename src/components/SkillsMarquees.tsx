@@ -4,7 +4,7 @@ import illustratorSvg from "@/assets/tool-logos/illustrator.svg?raw";
 import photoshopSvg from "@/assets/tool-logos/photoshop.svg?raw";
 import canvaSvg from "@/assets/tool-logos/canva.svg?raw";
 import corelDrawSvg from "@/assets/tool-logos/coreldraw.svg?raw";
-import affinitySvg from "@/assets/tool-logos/affinity-designer.svg?raw";
+import affinitySvg from "@/assets/tool-logos/affinity.svg?raw";
 import penpotSvg from "@/assets/tool-logos/penpot.svg?raw";
 import inkscapeSvg from "@/assets/tool-logos/inkscape.svg?raw";
 import gimpSvg from "@/assets/tool-logos/gimp.svg?raw";
@@ -31,14 +31,22 @@ interface Tool {
 // Logos reais, baixadas uma vez e versionadas em src/assets/tool-logos/
 // (não é CDN em runtime — decisão #17 já rejeitou dependência de rede
 // externa a cada visita, mesmo princípio aqui). Fontes e licenças por
-// arquivo: docs/architecture.md § Registro de decisões #39.
+// arquivo: docs/architecture.md § Registro de decisões #39. Todos os IDs
+// internos (gradientes, <use>) foram reprefixados por arquivo via svgo
+// (prefixIds) antes de versionar — os SVGs são injetados crus na mesma
+// página (dangerouslySetInnerHTML) e o Marquee ainda duplica cada um pra
+// loop contínuo, então IDs genéricos como "a"/"b" colidiam entre
+// arquivos diferentes e corrompiam o fill um do outro (decisão #41).
 const TOOLS: Tool[] = [
   { name: "Figma", svg: figmaSvg },
   { name: "Illustrator", svg: illustratorSvg },
   { name: "Photoshop", svg: photoshopSvg },
   { name: "Canva", svg: canvaSvg },
   { name: "CorelDRAW", svg: corelDrawSvg },
-  { name: "Affinity Designer", svg: affinitySvg },
+  // "Affinity" — em out/2025 a Serif (Canva) unificou Designer/Photo/
+  // Publisher num app único "Affinity" com marca nova (decisão #41);
+  // não faz mais sentido nomear "Affinity Designer" separado.
+  { name: "Affinity", svg: affinitySvg },
   { name: "Penpot", svg: penpotSvg, ossAlternativeTo: "Figma" },
   { name: "Inkscape", svg: inkscapeSvg, ossAlternativeTo: "Illustrator/CorelDRAW" },
   { name: "GIMP", svg: gimpSvg, ossAlternativeTo: "Photoshop" },
@@ -55,7 +63,7 @@ const TOOLS: Tool[] = [
  */
 export function SkillsMarquees() {
   return (
-    <div className="skills-marquees flex w-full shrink-0 flex-col gap-0.5">
+    <div className="skills-marquees flex w-full shrink-0 flex-col gap-3">
       <Marquee gap="sm" speed="slow" pauseOnHover fade aria-label="Competências">
         {COMPETENCIAS.map((competencia) => (
           <Badge key={competencia}>{competencia}</Badge>
