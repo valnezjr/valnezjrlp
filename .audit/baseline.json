@@ -1,0 +1,19 @@
+{
+  "data": "2026-08-21",
+  "commit": null,
+  "total": 6,
+  "porSeveridade": {
+    "critica": 0,
+    "alta": 2,
+    "media": 2,
+    "baixa": 2
+  },
+  "hashes": [
+    "04129b0aedd6",
+    "69271e690e47",
+    "ff6f5e854e6c",
+    "71ef2ebf2ce2",
+    "def0fb872824",
+    "ece3b77acb79"
+  ]
+}

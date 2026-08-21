@@ -1,0 +1,146 @@
+{
+  "findings": [
+    {
+      "id": "a11y-001",
+      "eixo": "a11y",
+      "severidade": "alta",
+      "titulo": "Troca de seção não move o foco nem anuncia a mudança",
+      "arquivo": "src/App.tsx",
+      "linha": 92,
+      "linhaFim": 101,
+      "evidencia": "<main ref={mainRef} className={cn(\"flex-1 overflow-hidden\", …)}>\n  <ActiveSection onNavigate={navigate} />\n</main>",
+      "cenario": "As 4 seções trocam por estado, sem router e sem recarregar a página. Nenhum dos 4 caminhos de navegação (botões da `Navbar`, `SectionDots`, setas do teclado em `App.tsx`, roda do mouse em `useWheelSectionNav`) move o foco ou dispara anúncio: quem usa leitor de tela clica em \"Serviços\", o conteúdo de `<main>` é substituído inteiro, e o foco continua no botão da navbar sem nada ser lido. Como o `<h1>` de cada seção também é substituído, a pessoa não tem nenhum sinal de que mudou de lugar.",
+      "impacto": "Navegação principal do site sem retorno para leitor de tela — a pessoa não sabe se o clique funcionou nem onde está.",
+      "correcao": "Depois da transição, mover o foco para o `<h1>` da seção nova (`tabIndex={-1}` + `.focus()` via ref) — é exatamente o que o `App.tsx` do styleguide do mothership-ds já faz, documentado em ARCHITECTURE.md § Performance do styleguide. Alternativa complementar: uma região `aria-live=\"polite\"` anunciando o nome da seção ativa.",
+      "esforco": "baixo",
+      "confianca": "alta",
+      "risco": "baixo",
+      "origem": "leitura",
+      "regra": "comunidade:foco-em-troca-de-view"
+    },
+    {
+      "id": "a11y-002",
+      "eixo": "a11y",
+      "severidade": "alta",
+      "titulo": "Setas do teclado trocam a seção por trás do Modal aberto",
+      "arquivo": "src/App.tsx",
+      "linha": 61,
+      "linhaFim": 78,
+      "evidencia": "const target = document.activeElement;\nif (target instanceof HTMLElement && (FOCUSABLE_INPUT_TAGS.has(target.tagName) || target.isContentEditable)) {\n  return;\n}\nnavigateRelative(e.key === \"ArrowRight\" ? 1 : -1);",
+      "cenario": "O listener de `keydown` vive em `document` e só se abstém quando o foco está num `INPUT`/`TEXTAREA`/`SELECT` ou em `contentEditable`. Com o `Modal` do case aberto (`Sobre.tsx`), o `Modal` do mothership-ds prende o foco dentro do diálogo — mas em um `<button>`, que passa pelo guarda. Uma seta esquerda/direita enquanto se lê um case troca a seção por baixo do véu; ao fechar o Modal a pessoa cai numa seção diferente da que estava. `useWheelSectionNav` trata esse caso de propósito (o listener é escopado a `main`, e o Modal porta para o `body`) — a navegação por roda está protegida e a por teclado não, e é essa assimetria que confirma o descuido.",
+      "impacto": "Conteúdo atrás de um diálogo modal continua respondendo ao teclado, quebrando o contrato de modal do próprio design system.",
+      "correcao": "Abster-se também quando houver um diálogo aberto: checar `document.querySelector('[role=\"dialog\"]')`, ou escopar o listener ao container `main` como `useWheelSectionNav` já faz, ou expor um estado de \"modal aberto\" que desliga a navegação relativa.",
+      "esforco": "baixo",
+      "confianca": "alta",
+      "risco": "baixo",
+      "origem": "leitura",
+      "regra": "comunidade:teclado-vs-modal"
+    },
+    {
+      "id": "bundle-001",
+      "eixo": "bundle-deps",
+      "severidade": "media",
+      "titulo": "CSS de 24 componentes nunca renderizados vem no bundle",
+      "arquivo": "src/main.tsx",
+      "linha": 4,
+      "evidencia": "import 'mothership-ds/styles.css'",
+      "cenario": "O JS faz tree-shaking corretamente — `ms-carousel`, `ms-table`, `ms-sidebar`, `ms-alert`, `ms-pricing`, `ms-bento`, `ms-accordion`, `ms-tabs`, `ms-select`, `ms-pagination` e outros têm 0 ocorrências no `index-*.js` gerado. O CSS não tem como fazer: `mothership-ds/styles.css` é um arquivo global único e entra inteiro. Podando do `dist/assets/index-*.css` os 246 blocos cujos seletores citam esses 24 componentes sem nenhuma referência no JS, o arquivo cai de 91.526 para 59.598 bytes brutos, e de 15,4 KB para 10,9 KB gzip.",
+      "impacto": "≈ 4,5 KB gzip (29% do CSS) baixados em toda visita para componentes que nunca são renderizados.",
+      "correcao": "Rodar um passo de PurgeCSS/`@fullhuman/postcss-purgecss` sobre o CSS da lib no build, com safelist para as classes injetadas em runtime (`.ms-modal*`, `.ms-drawer*`, e o que vier no HTML dos cases). Alternativa de maior fôlego, do lado da lib: expor os CSS por componente além do bundle único — mas isso contraria a decisão de arquivo global do mothership-ds e é decisão dela, não deste projeto.",
+      "esforco": "medio",
+      "confianca": "alta",
+      "risco": "medio",
+      "origem": "ferramenta:gzip",
+      "regra": "comunidade:css-global-sem-tree-shaking"
+    },
+    {
+      "id": "bundle-002",
+      "eixo": "bundle-deps",
+      "severidade": "media",
+      "titulo": "Thumbs do portfólio em PNG somam 2,1 MB",
+      "arquivo": "src/sections/Sobre.tsx",
+      "linha": 124,
+      "evidencia": "image: `url(${BASE}portfolio/thumbs/${project.file}.png)`,",
+      "cenario": "Os 14 thumbs em `public/portfolio/thumbs/` somam 2,1 MB em PNG, com média de 150 KB e máximo de 256 KB (`10-dev-decore-casa-textil.png`). São capturas de tela e peças gráficas — conteúdo fotográfico, o pior caso para PNG. A `Gallery` pagina (1 item por página abaixo de 640px, 3 ou 5 acima), então cada página puxa de 150 KB a 750 KB; percorrer os 14 projetos baixa os 2,1 MB inteiros. Como entram por `background-image` via a prop `image` da `Gallery`, não há `loading=\"lazy\"` nem `srcset` disponíveis para amortecer.",
+      "impacto": "Até 750 KB de imagem por página da galeria, num site cujo bundle JS inteiro é 85 KB gzip.",
+      "correcao": "Converter os thumbs para WebP ou AVIF na largura real de exibição (o card da Gallery não passa de ~360px) — mesma qualidade percebida com 70–80% menos bytes. O pipeline que já gera os cases (`catalogo/` → `public/`) é o lugar natural para esse passo.",
+      "esforco": "baixo",
+      "confianca": "alta",
+      "risco": "baixo",
+      "origem": "ferramenta:du",
+      "regra": "comunidade:asset-nao-otimizado"
+    },
+    {
+      "id": "a11y-003",
+      "eixo": "a11y",
+      "severidade": "baixa",
+      "titulo": "aria-controls do hambúrguer aponta para id que não existe com o menu fechado",
+      "arquivo": "src/components/Navbar.tsx",
+      "linha": 68,
+      "evidencia": "aria-controls={drawerId}",
+      "cenario": "O `<nav id={drawerId}>` vive dentro do `Drawer`, que só entra no DOM (portal no `<body>`) quando `open` é true. Com o menu fechado — o estado padrão — o `aria-controls` do botão referencia um id inexistente. Leitores de tela variam: alguns ignoram, outros anunciam um alvo vazio ao chegar no botão.",
+      "impacto": "Anúncio inconsistente do botão de menu antes da primeira abertura.",
+      "correcao": "Manter o `aria-controls` apenas quando o Drawer está montado (`aria-controls={open ? drawerId : undefined}`), já que `aria-expanded` sozinho carrega a informação de estado.",
+      "esforco": "baixo",
+      "confianca": "media",
+      "risco": "baixo",
+      "origem": "leitura",
+      "regra": "comunidade:aria-controls-inexistente"
+    },
+    {
+      "id": "a11y-004",
+      "eixo": "a11y",
+      "severidade": "baixa",
+      "titulo": "Alternativa open source das ferramentas existe só no atributo title",
+      "arquivo": "src/components/SkillsMarquees.tsx",
+      "linha": 77,
+      "evidencia": "title={tool.ossAlternativeTo ? `${tool.name} — alternativa open source a ${tool.ossAlternativeTo}` : tool.name}",
+      "cenario": "Nas 3 ferramentas com `ossAlternativeTo` (Penpot, Inkscape, GIMP), a relação com a alternativa proprietária só aparece no `title`, que não é exposto por toque no celular nem alcançável por teclado — e a `Badge` não é focável. Quem entra pelo celular, que é a maioria do tráfego de um portfólio compartilhado por link, nunca vê a informação.",
+      "impacto": "Informação de conteúdo indisponível para touch e teclado.",
+      "correcao": "Se a informação importa, torná-la visível (segunda linha na badge, ou legenda abaixo da marquee); se é acessória, `aria-label` na badge resolve para leitor de tela — mas continua invisível ao toque, então a decisão é de conteúdo, não técnica.",
+      "esforco": "baixo",
+      "confianca": "alta",
+      "risco": "baixo",
+      "origem": "leitura",
+      "regra": "comunidade:info-so-em-title"
+    }
+  ],
+  "observacoes": [
+    {
+      "eixo": "seguranca",
+      "arquivo": "src/components/CaseViewer.tsx",
+      "nota": "Os dois usos de HTML injetado foram rastreados e nenhum é achado. Em SkillsMarquees.tsx os SVGs entram por `import ... ?raw`, resolvidos em build a partir de arquivos versionados no repo. Em CaseViewer.tsx o HTML vem de `fetch` da própria origem, num caminho montado a partir da lista fixa `PROJECTS` — o `file` nunca vem de URL, query ou input. Além disso, `innerHTML` não executa `<script>` inserido. O comentário do arquivo já registra esse raciocínio; a auditoria confirma."
+    },
+    {
+      "eixo": "seguranca",
+      "arquivo": "index.html",
+      "nota": "Nenhuma CSP definida. O GitHub Pages não permite configurar cabeçalhos de resposta, então a única via seria `<meta http-equiv=\"Content-Security-Policy\">` no index.html — viável, mas exige acomodar o HTML de case injetado em runtime e os estilos inline usados pelo mothership-ds. Fica como endurecimento opcional, não como falha: não há vetor de injeção identificado hoje."
+    },
+    {
+      "eixo": "render-perf",
+      "arquivo": "src/App.tsx",
+      "nota": "Nenhum achado de performance de render. O que foi verificado e passou: todos os efeitos com listener ou timer têm cleanup (`App.tsx` keydown, `useWheelSectionNav` wheel, `useSectionTransition` dois timers, `Sobre.tsx` matchMedia); nenhuma key instável; nenhuma lista grande sem paginação (a Gallery pagina); nenhum trabalho pesado no corpo de componente. Os arrays recriados a cada render (`items` em Sobre.tsx, 14 elementos) não têm consumidor memoizado — memoizá-los seria custo sem ganho."
+    },
+    {
+      "eixo": "clean-code",
+      "arquivo": "src/main.tsx",
+      "nota": "`tsc -b` e `oxlint` rodaram limpos na máquina, com as dependências reais: 0 erros, 0 avisos, 17 arquivos, 103 regras. `noUnusedLocals` e `noUnusedParameters` estão ligados no tsconfig, e os 16 módulos de `src/` são todos alcançáveis a partir de `main.tsx` — não há código morto."
+    },
+    {
+      "eixo": "bundle-deps",
+      "arquivo": "src/lib/portfolio.ts",
+      "nota": "`public/` guarda 10,5 MB de PDFs (portfolio 6 MB, portfolio-mobile 4,5 MB) e 2,4 MB de imagens de case. Nada disso entra no carregamento inicial — PDF é download sob demanda e as imagens de case só chegam com o Modal aberto. Pesa no repositório e no artefato de deploy, não no usuário. Não é achado."
+    }
+  ],
+  "limites": [
+    "Projeto pequeno (16 módulos em src/): todos foram lidos integralmente, sem amostragem — a priorização por volatilidade não precisou entrar.",
+    "knip, madge, jscpd e depcheck não rodaram: o acesso à máquina não tem rede para `npx`, e as ferramentas não estão instaladas no projeto. Código morto e grafo de imports foram verificados por leitura integral, que num projeto deste tamanho é mais confiável que a ferramenta.",
+    "`tsc -b` e `oxlint` rodaram de verdade, na máquina, com as dependências reais do projeto — os dois limpos.",
+    "Peso de bundle medido sobre o `dist/` já existente (build de 2026-08-21), não regerado. Números de gzip calculados sobre os arquivos reais.",
+    "axe não rodou: o app não foi executado. Toda a auditoria de acessibilidade é por leitura de código, e não cobre ordem de foco em execução, qualidade de anúncio nem navegação real com leitor de tela.",
+    "Auditoria de segurança estática: leitura de código e varredura de padrões. Sem teste dinâmico e sem pentest. O projeto não tem backend próprio — não há camada de servidor a auditar.",
+    "Varredura de segredos no estado atual do repositório, não no histórico do git. Nenhum segredo encontrado: sem `.env` rastreado, sem prefixo de chave conhecido, sem variável `VITE_` exposta, sem uso de localStorage/sessionStorage/cookies.",
+    "`mothership-ds` está preso a um commit git e não foi auditado: os achados param na fronteira do que este repositório controla.",
+    "O projeto não tem suíte de testes automatizados — nenhuma das correções sugeridas vem com rede de segurança, o que eleva o risco real de todas elas."
+  ]
+}

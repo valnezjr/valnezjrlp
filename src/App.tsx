@@ -70,6 +70,19 @@ function App() {
         return;
       }
 
+      // a11y-002 (.audit/): as setas não podem trocar de seção por trás
+      // de um Modal aberto — o Modal do mothership-ds prende o foco
+      // dentro de si (inclusive em botões, que passam pelo guard acima
+      // sem barrar), mas este listener vive em `document`, então sem
+      // este check a troca acontecia por baixo do véu. `role="dialog"`
+      // só existe no DOM enquanto o Modal está montado/visível
+      // (Modal.tsx: `if (!mounted || !visible) return null`) — a
+      // checagem já cobre a animação de fechamento também.
+      // `useWheelSectionNav` já era imune a isso por outro motivo
+      // (escopado a `main`, que o Modal nunca atinge por portar pro
+      // `body`) — mesma proteção, caminho diferente.
+      if (document.querySelector('[role="dialog"]')) return;
+
       navigateRelative(e.key === "ArrowRight" ? 1 : -1);
     }
 
@@ -82,6 +95,35 @@ function App() {
   // do respeito às áreas com scroll interno de verdade (galeria do
   // portfólio, decisão #32).
   useWheelSectionNav(mainRef, navigateRelative);
+
+  // a11y-001 (.audit/): nenhum dos 4 caminhos de navegação (Navbar,
+  // SectionDots, teclado, wheel) movia o foco ou avisava leitor de tela
+  // ao trocar de seção — a pessoa clicava e não tinha nenhum sinal de
+  // que algo mudou. Centralizado aqui (achando o <h1> dentro de `main`)
+  // em vez de tabIndex por seção porque o <h1> de Home vem de dentro do
+  // Hero do mothership-ds, que não expõe ref/id pro elemento interno —
+  // "achar o primeiro h1 depois que o DOM da seção nova montou" cobre
+  // as 4 seções sem precisar tocar na lib. `tabIndex=-1` só é setado se
+  // ainda não existir, pra não sobrescrever um valor explícito que
+  // algum h1 venha a ter no futuro. Não roda na primeira montagem —
+  // foco de carga de página é papel do navegador, não deste efeito; só
+  // troca de seção via navegação real deve mover foco. Compara com o
+  // `displayed` anterior (em vez de um booleano "primeira vez") de
+  // propósito: `<StrictMode>` (main.tsx) roda todo efeito 2x em dev
+  // sem cleanup pra revelar bugs desse tipo — um booleano simples
+  // marca "já rodei" na 1ª chamada e foca errado na 2ª simulada;
+  // comparar o valor em si é imune, porque `displayed` não muda entre
+  // as duas chamadas sintéticas.
+  const prevDisplayedRef = useRef<SectionId | null>(null);
+  useEffect(() => {
+    const prev = prevDisplayedRef.current;
+    prevDisplayedRef.current = displayed;
+    if (prev === null || prev === displayed) return;
+    const heading = mainRef.current?.querySelector<HTMLElement>("h1");
+    if (!heading) return;
+    if (!heading.hasAttribute("tabindex")) heading.tabIndex = -1;
+    heading.focus({ preventScroll: true });
+  }, [displayed]);
 
   return (
     <ThemeProvider>

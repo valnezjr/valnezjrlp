@@ -65,7 +65,11 @@ export function Navbar({
           className="ms-navbar__burger"
           aria-label="Menu"
           aria-expanded={open}
-          aria-controls={drawerId}
+          // a11y-003 (.audit/): o <nav id={drawerId}> só entra no DOM
+          // (portal no body) quando o Drawer está `open` — com o menu
+          // fechado, aria-controls apontava pra um id inexistente.
+          // aria-expanded sozinho já carrega a informação de estado.
+          aria-controls={open ? drawerId : undefined}
           onClick={() => setOpen((o) => !o)}
         >
           <span />
