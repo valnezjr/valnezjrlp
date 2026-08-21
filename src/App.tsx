@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState, type ComponentType } from "react";
-import { LivingBackground, Splash, ThemeProvider } from "mothership-ds";
+import { LivingBackground, Splash, ThemeProvider, TooltipProvider } from "mothership-ds";
 import { Navbar } from "@/components/Navbar";
 import { SectionDots } from "@/components/SectionDots";
 import { SECTIONS, type SectionId } from "@/lib/navigation";
@@ -128,21 +128,28 @@ function App() {
   return (
     <ThemeProvider>
       {loading && <Splash onFinish={() => setLoading(false)} />}
-      <LivingBackground />
-      <div className="flex h-full w-full flex-col overflow-hidden">
-        <Navbar active={active} onNavigate={navigate} />
-        <main
-          ref={mainRef}
-          className={cn(
-            "flex-1 overflow-hidden",
-            phase === "leaving" && "section-leaving",
-            phase === "entering" && "section-entering",
-          )}
-        >
-          <ActiveSection onNavigate={navigate} />
-        </main>
-        <SectionDots active={active} onNavigate={navigate} />
-      </div>
+      {/* a11y-004 (.audit/): dá tooltip a qualquer elemento com data-tip
+          — reage a ponteiro e a foco de teclado desde o commit pinado
+          em package.json (docs/architecture.md § Registro de decisões
+          #47). Só monta o mecanismo; cada uso decide se o elemento é
+          focável (tabIndex) — ver SkillsMarquees.tsx. */}
+      <TooltipProvider>
+        <LivingBackground />
+        <div className="flex h-full w-full flex-col overflow-hidden">
+          <Navbar active={active} onNavigate={navigate} />
+          <main
+            ref={mainRef}
+            className={cn(
+              "flex-1 overflow-hidden",
+              phase === "leaving" && "section-leaving",
+              phase === "entering" && "section-entering",
+            )}
+          >
+            <ActiveSection onNavigate={navigate} />
+          </main>
+          <SectionDots active={active} onNavigate={navigate} />
+        </div>
+      </TooltipProvider>
     </ThemeProvider>
   );
 }

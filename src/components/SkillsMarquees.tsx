@@ -70,16 +70,34 @@ export function SkillsMarquees() {
         ))}
       </Marquee>
       <Marquee gap="sm" speed="slow" direction="right" pauseOnHover fade aria-label="Ferramentas">
-        {TOOLS.map((tool) => (
-          <Badge
-            key={tool.name}
-            className="tool-badge"
-            title={tool.ossAlternativeTo ? `${tool.name} — alternativa open source a ${tool.ossAlternativeTo}` : tool.name}
-          >
-            <span className="tool-badge__icon" aria-hidden="true" dangerouslySetInnerHTML={{ __html: tool.svg }} />
-            {tool.name}
-          </Badge>
-        ))}
+        {TOOLS.map((tool) =>
+          tool.ossAlternativeTo ? (
+            // a11y-004 (.audit/): a relação com a alternativa open source
+            // só existia no `title`, que não é exposto por toque nem
+            // alcançável por teclado (Badge não é focável por padrão) —
+            // achado real da auditoria. `data-tip` (TooltipProvider,
+            // montado em App.tsx) reage a ponteiro E a foco desde
+            // mothership-ds#fbd40fa (docs/architecture.md § Registro de
+            // decisões #47) — `tabIndex={0}` é o que falta pra esta
+            // badge específica virar um tab stop de verdade; as outras
+            // (sem informação extra além do nome já visível como texto)
+            // continuam fora da ordem de tab, sem necessidade.
+            <Badge
+              key={tool.name}
+              className="tool-badge"
+              tabIndex={0}
+              data-tip={`${tool.name} — alternativa open source a ${tool.ossAlternativeTo}`}
+            >
+              <span className="tool-badge__icon" aria-hidden="true" dangerouslySetInnerHTML={{ __html: tool.svg }} />
+              {tool.name}
+            </Badge>
+          ) : (
+            <Badge key={tool.name} className="tool-badge" title={tool.name}>
+              <span className="tool-badge__icon" aria-hidden="true" dangerouslySetInnerHTML={{ __html: tool.svg }} />
+              {tool.name}
+            </Badge>
+          ),
+        )}
       </Marquee>
     </div>
   );
