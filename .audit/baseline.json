@@ -1,19 +1,22 @@
 {
   "data": "2026-08-21",
-  "commit": null,
-  "total": 6,
+  "commit": "b35e654",
+  "total": 9,
   "porSeveridade": {
     "critica": 0,
     "alta": 2,
-    "media": 2,
-    "baixa": 2
+    "media": 7,
+    "baixa": 0
   },
   "hashes": [
-    "04129b0aedd6",
-    "69271e690e47",
-    "ff6f5e854e6c",
-    "71ef2ebf2ce2",
-    "def0fb872824",
-    "ece3b77acb79"
+    "e92dd4a5f976",
+    "7caf7734848a",
+    "c7c4f18de0d0",
+    "de6da8ced0f8",
+    "a480f275425f",
+    "5107ffb9e560",
+    "759089fc05ec",
+    "b3f7632d90aa",
+    "71ef2ebf2ce2"
   ]
 }
