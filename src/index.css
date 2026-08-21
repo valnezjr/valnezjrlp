@@ -89,6 +89,48 @@ body.ms-page {
   transform: none;
 }
 
+/* SectionDots — indicador de navegação lateral (architecture.md §
+   Registro de decisões #42). Variante vertical própria (não as classes
+   .ms-step-indicator__* do StepIndicator/Gallery): o dot ativo cresce em
+   ALTURA aqui, não largura — ver JSDoc de SectionDots.tsx pro porquê.
+   right: var(--space-2) (8px) cabe com folga dentro do px-6 (24px) que
+   o SectionShell sempre reserva de cada lado, em qualquer largura
+   testada (360px–1920px) — por isso nenhum breakpoint esconde o rail.
+   z-index abaixo da navbar (100) e dos overlays (Modal/Drawer, 150+),
+   acima do conteúdo normal (sem z-index próprio). */
+.section-dots {
+  position: fixed;
+  top: 50%;
+  right: var(--space-2);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  transform: translateY(-50%);
+}
+
+.section-dots__dot {
+  width: var(--dot-size);
+  height: var(--dot-size);
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: var(--color-border);
+  cursor: pointer;
+  transition: height 0.3s var(--ease-bounce), background var(--transition-slow);
+}
+
+.section-dots__dot--active {
+  height: var(--dot-size-active);
+  background: var(--color-text);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section-dots__dot {
+    transition: background var(--transition-slow);
+  }
+}
+
 /* Transição entre seções — architecture.md §5. Keyframes (não
    transition) porque o fade-in precisa começar de um estado inicial
    definido (opacidade 0, 8px abaixo) no exato frame em que a seção

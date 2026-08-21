@@ -210,8 +210,23 @@ de decisões e o styleguide publicado em valnezjr.github.io/mothership-ds/).
   registrada em `architecture.md` § Registro de decisões. Vercel/
   Netlify/domínio próprio continuam opção pra quando decidir o destino
   definitivo.
-- **Indicador de navegação:** `Adicione dots/indicador discreto na lateral ou rodapé mostrando qual das 4 seções está ativa, clicáveis.`
-- **Navegação por roda do mouse:** `Adicione troca de seção via scroll do mouse (com debounce para trocar apenas uma seção por gesto), mantendo o fade.`
+- ~~**Indicador de navegação:** `Adicione dots/indicador discreto na lateral ou rodapé mostrando qual das 4 seções está ativa, clicáveis.`~~
+  Feito: `SectionDots` (`src/components/SectionDots.tsx`), rail vertical fixo
+  na borda direita, centralizado na altura da viewport. Posição validada
+  com Playwright (não só suposta): `SectionShell` sempre reserva 24px de
+  cada lado do conteúdo real, em qualquer largura de 360px a 1920px — o
+  rail cabe dentro dessa margem em toda parte, sem precisar esconder
+  abaixo de nenhum breakpoint. Decisão registrada em `architecture.md` §
+  Registro de decisões #42.
+- ~~**Navegação por roda do mouse:** `Adicione troca de seção via scroll do mouse (com debounce para trocar apenas uma seção por gesto), mantendo o fade.`~~
+  Feito: `useWheelSectionNav` (`src/lib/useWheelSectionNav.ts`), um passo
+  por gesto (cooldown de 650ms via ref, não state). Respeita áreas com
+  scroll interno de verdade (galeria do portfólio, decisão #32) — só
+  troca de seção quando a área rolável já está no limite (topo/fundo),
+  verificado nesse caso específico com `dispatchEvent` determinístico em
+  vez de wheel sintético via CDP (Chromium headless não entrega wheel
+  sintético sem uma ativação real prévia da página — não afeta uso real).
+  Decisão registrada em `architecture.md` § Registro de decisões #42.
 - ~~**SEO/Open Graph:** `Adicione meta tags Open Graph e favicon para compartilhamento em redes sociais.`~~
   Feito: `title`/`meta description` reaproveitando a proposta de valor do
   `prd.md` §3 (texto já aprovado, não inventado), `og:*`/`twitter:*`

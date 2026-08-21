@@ -103,12 +103,12 @@ Divulgar os serviços de Valnez Júnior, Designer Engineer, e converter visitant
   celular sem zoom/scroll horizontal) continua existindo, só que
   exclusivamente para esse download — não é mais renderizada na tela.
 
-> **`[PENDENTE]`** — o material de 2026-08-10 trouxe também um PDF índice
-> do portfólio inteiro (`00-Portfolio-Indice.pdf`/`-mobile`, já copiado
-> pra `public/portfolio(-mobile)/`), sem relação com nenhum projeto
-> específico. Copiado mas **sem link/botão em nenhum lugar da UI ainda**
-> — falta decidir se/onde expor (ex.: um "baixar portfólio completo"
-> perto do cabeçalho da seção Sobre).
+> **Resolvido (2026-08-21):** o PDF índice do portfólio inteiro
+> (`00-Portfolio-Indice.pdf`/`-mobile`, copiado em `public/portfolio(-mobile)/`
+> desde 2026-08-10) fica só como arquivo interno — decisão direta de
+> Valnez, sem link/botão em nenhum lugar da UI. Não é conteúdo do site,
+> é material de apoio dele mesmo; permanece versionado ali só pra não se
+> perder, sem nenhuma seção precisando referenciá-lo.
 
 ### 5.4 Contato
 - **Título:** "Vamos conversar?"
