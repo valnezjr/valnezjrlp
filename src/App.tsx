@@ -81,7 +81,15 @@ function App() {
       // `useWheelSectionNav` já era imune a isso por outro motivo
       // (escopado a `main`, que o Modal nunca atinge por portar pro
       // `body`) — mesma proteção, caminho diferente.
-      if (document.querySelector('[role="dialog"]')) return;
+      //
+      // a11y-008 (.audit/): o guard acima cobria só o Modal — com o
+      // menu mobile (Drawer, Navbar.tsx) aberto, a seta trocava de
+      // seção por baixo dele também, já que o Drawer é deliberadamente
+      // "leve" (sem `role="dialog"`, sem focus trap — mothership-ds
+      // ARCHITECTURE.md). `.ms-drawer--open` é a classe que a própria
+      // lib aplica só enquanto aberto (nunca em botão nenhum de
+      // formulário, então não precisa entrar no guard de cima).
+      if (document.querySelector('[role="dialog"], .ms-drawer--open')) return;
 
       navigateRelative(e.key === "ArrowRight" ? 1 : -1);
     }

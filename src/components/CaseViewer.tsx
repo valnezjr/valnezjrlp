@@ -13,9 +13,13 @@ import "./case.css";
 //
 // O fragmento é buscado como texto (fetch, não <iframe>/import estático
 // — cada case pesa uns poucos KB de HTML, não vale entrar no bundle
-// principal) e injetado via dangerouslySetInnerHTML: é HTML confiável,
-// gerado pelo pipeline do próprio autor (não input de usuário/terceiro),
-// então não há superfície de XSS real a mitigar aqui — mesma categoria de
+// principal) e injetado via `containerRef.current.innerHTML = html`
+// dentro do useEffect abaixo (não o prop `dangerouslySetInnerHTML` do
+// React — achado clean-001, .audit/: o comentário antigo citava o prop
+// errado, o que fazia um `grep dangerouslySetInnerHTML` de auditoria
+// não encontrar este sink real). É HTML confiável, gerado pelo
+// pipeline do próprio autor (não input de usuário/terceiro), então não
+// há superfície de XSS real a mitigar aqui — mesma categoria de
 // confiança que os textos de docs/prd.md já teriam se fossem HTML.
 //
 // Dois tokens são substituídos em runtime antes da injeção, porque o

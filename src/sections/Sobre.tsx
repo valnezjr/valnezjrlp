@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect, useState } from "react";
 import { Avatar, Gallery, Loader, Modal, type GalleryCategory, type GalleryItem } from "mothership-ds";
 import { SectionShell } from "@/components/SectionShell";
 import { SkillsMarquees } from "@/components/SkillsMarquees";
+import { GALLERY_COLUMNS, GALLERY_SHORT_MAX_HEIGHT, GALLERY_WIDE_MIN_WIDTH } from "@/lib/galleryBreakpoints";
 import { BASE } from "@/lib/portfolio";
 
 // CaseViewer busca um fragmento HTML (poucos KB) por trás de fetch, não
@@ -78,20 +79,20 @@ const PROJECTS: Project[] = [
 // numa linha (2/espelhando 3/5 do index.css), nunca o de linhas.
 function useItemsPerPage() {
   const compute = () => {
-    if (typeof window === "undefined") return 3;
-    const wide = window.matchMedia("(min-width: 640px)").matches;
-    const short = window.matchMedia("(max-height: 700px)").matches;
-    if (wide && short) return 5; // 5 colunas (index.css)
-    if (wide) return 3; // 3 colunas
-    return 1; // 1 por vez — card padrão da lib (foto 4:3 em cima) não cabe 2 empilhados
+    if (typeof window === "undefined") return GALLERY_COLUMNS.wide;
+    const wide = window.matchMedia(`(min-width: ${GALLERY_WIDE_MIN_WIDTH}px)`).matches;
+    const short = window.matchMedia(`(max-height: ${GALLERY_SHORT_MAX_HEIGHT}px)`).matches;
+    if (wide && short) return GALLERY_COLUMNS.wideShort;
+    if (wide) return GALLERY_COLUMNS.wide;
+    return GALLERY_COLUMNS.narrow;
   };
 
   const [itemsPerPage, setItemsPerPage] = useState(compute);
 
   useEffect(() => {
     const queries = [
-      window.matchMedia("(min-width: 640px)"),
-      window.matchMedia("(max-height: 700px)"),
+      window.matchMedia(`(min-width: ${GALLERY_WIDE_MIN_WIDTH}px)`),
+      window.matchMedia(`(max-height: ${GALLERY_SHORT_MAX_HEIGHT}px)`),
     ];
     const onChange = () => setItemsPerPage(compute());
     queries.forEach((mq) => mq.addEventListener("change", onChange));
@@ -130,7 +131,22 @@ export function Sobre() {
 
   return (
     <SectionShell>
-      <div className="sobre-content flex h-full w-full max-w-4xl flex-col items-center gap-4 sm:h-auto">
+      {/* a11y-007 (.audit/): em telas baixas (index.css, @media
+          max-height:700px) este bloco vira overflow-y:auto — sem
+          tabIndex, ninguém navegando só por teclado (sem
+          trackpad/roda) conseguia rolar até o fim, só de forma
+          indireta tabulando pra um controle focável lá dentro. WCAG
+          SCR29. Sem custo nas alturas normais, onde não há overflow
+          real pra rolar. .portfolio-gallery .ms-gallery__grid abaixo
+          tem o mesmo padrão (decisão #32) — registrado como
+          observação na auditoria, não como achado; fora do escopo
+          desta correção porque o tabIndex precisaria ir no elemento
+          interno da Gallery (mothership-ds), sem prop pra isso hoje. */}
+      <div
+        tabIndex={0}
+        aria-label="Conteúdo da seção Sobre"
+        className="sobre-content flex h-full w-full max-w-4xl flex-col items-center gap-4 sm:h-auto"
+      >
         <div className="sobre-intro flex shrink-0 flex-col items-center gap-0.5 text-center sm:gap-1">
           <Avatar size="sm" initials="VJ" alt="Valnez Júnior" />
           <div>

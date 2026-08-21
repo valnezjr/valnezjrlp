@@ -233,13 +233,19 @@ body.ms-page {
   flex: 0 0 auto;
 }
 
+/* Os dois limiares abaixo (640/700) e as contagens de coluna (3/5) são
+   espelhados em src/lib/galleryBreakpoints.ts, consumido por
+   useItemsPerPage (Sobre.tsx) pro cálculo de paginação — CSS não lê
+   constante de TS, então os dois lados precisam mudar juntos à mão.
+   Achado arquitetura-001 (.audit/): antes eram literais soltos nos
+   dois lados, sem nada avisando se um ficasse pra trás. */
 @media (min-width: 640px) {
   .ms-gallery.portfolio-gallery {
     display: block;
   }
 
   .portfolio-gallery .ms-gallery__grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 1fr); /* GALLERY_COLUMNS.wide */
     padding: 0;
     overflow-x: visible;
     overflow-y: visible;
@@ -257,7 +263,7 @@ body.ms-page {
 
 @media (min-width: 640px) and (max-height: 700px) {
   .portfolio-gallery .ms-gallery__grid {
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(5, 1fr); /* GALLERY_COLUMNS.wideShort */
   }
 }
 
