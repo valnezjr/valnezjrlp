@@ -130,7 +130,7 @@ export function Sobre() {
 
   return (
     <SectionShell>
-      <div className="sobre-content flex h-full w-full max-w-4xl flex-col items-center gap-1 sm:h-auto">
+      <div className="sobre-content flex h-full w-full max-w-4xl flex-col items-center gap-4 sm:h-auto">
         <div className="sobre-intro flex shrink-0 flex-col items-center gap-0.5 text-center sm:gap-1">
           <Avatar size="sm" initials="VJ" alt="Valnez Júnior" />
           <div>

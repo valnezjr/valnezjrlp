@@ -348,16 +348,27 @@ body.ms-page {
 
 /* As duas faixas de SkillsMarquees não existiam quando a seção Sobre já
    tinha zero de sobra na altura mais baixa testada (1366×600, ~464px
-   úteis — architecture.md §4/decisão #7). Adicionar as faixas sem
-   compensar em nada estourava ~19px nessa mesma altura (medido,
-   Playwright). Mesmo limiar de "curto" que useItemsPerPage já usa
-   (Sobre.tsx, max-height: 700px) — não inventa um segundo número mágico
-   — aperta só os respiros (gap e entrelinha), nunca o tamanho de fonte
-   abaixo de 10px (já é o piso de legibilidade aceito nesta seção,
-   decisão #39): tira ~26px, sobra ~7px de folga em 600px de altura. */
+   úteis — architecture.md §4/decisão #7). Mesmo limiar de "curto" que
+   useItemsPerPage já usa (Sobre.tsx, max-height: 700px) — não inventa um
+   segundo número mágico — aperta a entrelinha e o tamanho dos ícones,
+   nunca o tamanho de fonte abaixo de 10px (já é o piso de legibilidade
+   aceito nesta seção, decisão #39).
+
+   .sobre-content NÃO zera mais o próprio gap aqui (decisão #43,
+   architecture.md — feedback direto de que ficava apertado demais entre
+   a apresentação, as marquees e a galeria): fica em --space-2, e o que
+   ainda não couber vira scroll vertical dentro do próprio bloco
+   (overflow-y: auto + altura travada, só entra em ação quando o
+   conteúdo realmente excede a altura disponível — sem barra visível
+   quando cabe sozinho, mesmo princípio já usado na galeria do portfólio
+   em telas estreitas, decisão #32). */
 @media (max-height: 700px) {
   .sobre-content {
-    gap: 0;
+    gap: var(--space-2);
+    height: 100%;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
   .sobre-intro {
     gap: 0;
