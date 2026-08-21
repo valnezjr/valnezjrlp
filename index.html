@@ -2,7 +2,16 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <!-- Favicon = marca do mothership-ds (olho + sorriso, mesmos paths
+         de LogoMark/Loader), não um ícone genérico do projeto — pedido
+         direto. Arquivos copiados de assets/favicon*.{svg,png} da lib
+         (docs/architecture.md § Registro de decisões), mesmo conjunto
+         de 4 tamanhos e mesma ordem de <link> que o próprio styleguide
+         do mothership-ds usa (styleguide/build.mjs). -->
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="icon" href="/favicon-16.png" sizes="16x16" type="image/png" />
+    <link rel="apple-touch-icon" href="/favicon-180.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Valor de --bg-base do tema escuro (mothership-ds tokens.css) —
          não dá pra referenciar a CSS custom property aqui (meta tag é
