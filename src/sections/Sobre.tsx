@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect, useState } from "react";
 import { Avatar, Gallery, Loader, Modal, type GalleryCategory, type GalleryItem } from "mothership-ds";
 import { SectionShell } from "@/components/SectionShell";
 import { SkillsMarquees } from "@/components/SkillsMarquees";
+import { nextAvatarPhoto } from "@/lib/avatarPhotos";
 import { GALLERY_COLUMNS, GALLERY_SHORT_MAX_HEIGHT, GALLERY_WIDE_MIN_WIDTH } from "@/lib/galleryBreakpoints";
 import { BASE } from "@/lib/portfolio";
 
@@ -116,6 +117,9 @@ function CaseViewerFallback() {
 
 export function Sobre() {
   const itemsPerPage = useItemsPerPage();
+  // Lazy init (só roda 1x, na montagem) — cicla pra próxima pose real
+  // (aberto/contido/joinha) a cada nova visita, ver avatarPhotos.ts.
+  const [avatarPhoto] = useState(nextAvatarPhoto);
   // Fica com o último projeto durante o fade de saída do Modal (só
   // `open` vira false) — limpar junto cortaria o case no meio da
   // animação, mesmo padrão já usado em Servicos.tsx.
@@ -148,7 +152,7 @@ export function Sobre() {
         className="sobre-content flex h-full w-full max-w-4xl flex-col items-center gap-4 sm:h-auto"
       >
         <div className="sobre-intro flex shrink-0 flex-col items-center gap-0.5 text-center sm:gap-1">
-          <Avatar size="md" initials="VJ" alt="Valnez Júnior" />
+          <Avatar size="lg" src={avatarPhoto.src} initials="VJ" alt="Valnez Júnior" />
           <div>
             <h1 className="ms-h2" style={{ marginBottom: 0 }}>
               Sobre

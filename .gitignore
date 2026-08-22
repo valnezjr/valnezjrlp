@@ -18,6 +18,11 @@ dist-ssr
 # docs/architecture.md § Registro de decisões #34.
 catalogo/
 
+# Mesmo princípio da #34 acima: entrega bruta de fotos de perfil (zip
+# com os 3 recortes/2 resoluções/2 formatos de cada pose) — só o recorte
+# já escolhido e usado (public/avatar/*.jpg) é versionado.
+ImportPFP/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
