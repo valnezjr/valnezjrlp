@@ -341,6 +341,43 @@ body.ms-page {
   display: block;
 }
 
+/* Skeleton por trás da foto de perfil (Sobre.tsx) — Sobre só monta
+   quando a pessoa navega até a seção (App.tsx troca por estado, não por
+   scroll), então a foto começa a baixar só nesse instante; sem isso o
+   círculo ficava vazio até a imagem chegar. Skeleton e Avatar
+   permanecem os dois montados o tempo todo, empilhados na mesma célula
+   de grid (evita position:absolute manual) — só a opacidade troca no
+   onLoad, então o carregamento já em andamento nunca é perdido. */
+.sobre-avatar {
+  display: grid;
+}
+.sobre-avatar > * {
+  grid-area: 1 / 1;
+}
+.sobre-avatar .ms-skeleton--circle {
+  width: var(--avatar-size);
+  height: var(--avatar-size);
+}
+.sobre-avatar__skeleton {
+  transition: opacity 200ms ease;
+}
+.sobre-avatar__skeleton--hidden {
+  opacity: 0;
+}
+.sobre-avatar__img {
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+.sobre-avatar__img--visible {
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .sobre-avatar__skeleton,
+  .sobre-avatar__img {
+    transition: none;
+  }
+}
+
 /* Compacta a seção Sobre (architecture.md §4 — nunca scroll, sempre
    apertado nas alturas mais baixas testadas) tem que abrir espaço pras
    duas faixas novas sem estourar viewport: fonte reduzida do Badge
@@ -390,12 +427,17 @@ body.ms-page {
     width: 10px;
     height: 10px;
   }
-  /* Avatar decorativo (iniciais "VJ", ainda placeholder — prd.md §5.3)
-     é o que sobra mais fácil de ceder nas alturas mais curtas: 48px
-     (--sm, tamanho já mínimo da lib) ainda não fechava a conta sozinho
-     com os cortes acima. 32px continua reconhecível como avatar redondo
-     — só encolhe aqui, não em nenhum outro lugar que usa Avatar. */
+  /* Avatar (foto real, ver avatarPhotos.ts) é o que sobra mais fácil de
+     ceder nas alturas mais curtas: 48px (--sm, tamanho já mínimo da
+     lib) ainda não fechava a conta sozinho com os cortes acima. 32px
+     continua reconhecível como avatar redondo — só encolhe aqui, não em
+     nenhum outro lugar que usa Avatar. Skeleton acompanha o mesmo
+     tamanho pra não saltar quando a foto termina de carregar. */
   .sobre-intro .ms-avatar {
+    width: 32px;
+    height: 32px;
+  }
+  .sobre-avatar .ms-skeleton--circle {
     width: 32px;
     height: 32px;
   }

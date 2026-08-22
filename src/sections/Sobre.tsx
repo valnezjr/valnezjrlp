@@ -1,10 +1,11 @@
 import { lazy, Suspense, useEffect, useState } from "react";
-import { Avatar, Gallery, Loader, Modal, type GalleryCategory, type GalleryItem } from "mothership-ds";
+import { Avatar, Gallery, Loader, Modal, Skeleton, type GalleryCategory, type GalleryItem } from "mothership-ds";
 import { SectionShell } from "@/components/SectionShell";
 import { SkillsMarquees } from "@/components/SkillsMarquees";
 import { nextAvatarPhoto } from "@/lib/avatarPhotos";
 import { GALLERY_COLUMNS, GALLERY_SHORT_MAX_HEIGHT, GALLERY_WIDE_MIN_WIDTH } from "@/lib/galleryBreakpoints";
 import { BASE } from "@/lib/portfolio";
+import { cn } from "@/lib/utils";
 
 // CaseViewer busca um fragmento HTML (poucos KB) por trás de fetch, não
 // pdf.js — bem mais leve que o antigo PdfViewer, mas ainda assim lazy():
@@ -120,6 +121,13 @@ export function Sobre() {
   // Lazy init (só roda 1x, na montagem) — cicla pra próxima pose real
   // (aberto/contido/joinha) a cada nova visita, ver avatarPhotos.ts.
   const [avatarPhoto] = useState(nextAvatarPhoto);
+  // Sobre só monta quando a pessoa navega até aqui (App.tsx troca de
+  // seção por estado, não por scroll) — a foto começa a baixar só
+  // nesse instante, então sem isso o círculo fica vazio até chegar.
+  // ms-skeleton (mothership-ds) cobre o espaço até o <img> disparar
+  // onLoad; ambos ficam montados o tempo todo (.sobre-avatar, index.css)
+  // pra não perder o carregamento já em andamento ao trocar de estado.
+  const [avatarLoaded, setAvatarLoaded] = useState(false);
   // Fica com o último projeto durante o fade de saída do Modal (só
   // `open` vira false) — limpar junto cortaria o case no meio da
   // animação, mesmo padrão já usado em Servicos.tsx.
@@ -152,7 +160,20 @@ export function Sobre() {
         className="sobre-content flex h-full w-full max-w-4xl flex-col items-center gap-4 sm:h-auto"
       >
         <div className="sobre-intro flex shrink-0 flex-col items-center gap-0.5 text-center sm:gap-1">
-          <Avatar size="lg" src={avatarPhoto.src} initials="VJ" alt="Valnez Júnior" />
+          <div className="sobre-avatar">
+            <Skeleton
+              variant="circle"
+              className={cn("sobre-avatar__skeleton", avatarLoaded && "sobre-avatar__skeleton--hidden")}
+            />
+            <Avatar
+              size="lg"
+              src={avatarPhoto.src}
+              initials="VJ"
+              alt="Valnez Júnior"
+              className={cn("sobre-avatar__img", avatarLoaded && "sobre-avatar__img--visible")}
+              onLoad={() => setAvatarLoaded(true)}
+            />
+          </div>
           <div>
             <h1 className="ms-h2" style={{ marginBottom: 0 }}>
               Sobre
