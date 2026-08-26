@@ -34,11 +34,23 @@ const CATEGORIES: GalleryCategory[] = [
 // com o que já existe neles). Sem categoria "print" (decisão #17 do
 // Servicos oferece o serviço, mas não há case completo dela ainda) —
 // melhor não mostrar um filtro que sempre dá vazio.
+//
+// addedAt (opcional, "AAAA-MM-DD") alimenta o badge "Novo" da Gallery
+// (mothership-ds — GalleryItem.addedAt) e o seletor de ordenação por
+// data: um projeto com addedAt fica com o contorno + badge "Novo" por
+// 30 dias corridos a partir dessa data, e flutua pro topo com a ordem
+// padrão "mais novos primeiro". Ao adicionar um projeto novo de
+// verdade, preencher com a data real de hoje — os 14 já existentes
+// ficam sem addedAt de propósito (foram todos importados de uma vez
+// em 2026-08-06, não são "novos" de fato; ver decisão registrada na
+// conversa que introduziu addedAt) e continuam na ordem manual atual
+// entre si (sort estável, ver disclosure.tsx).
 interface Project {
   file: string;
   title: string;
   description: string;
   category: "digital" | "brand";
+  addedAt?: string;
 }
 
 const PROJECTS: Project[] = [
@@ -138,6 +150,7 @@ export function Sobre() {
     title: project.title,
     description: project.description,
     categories: [project.category],
+    addedAt: project.addedAt,
     onClick: () => setSelected(project),
   }));
 
@@ -187,11 +200,21 @@ export function Sobre() {
 
         <SkillsMarquees />
 
+        {/* sortable (mothership-ds — Gallery): botão de ordenação por
+            data de adição (Project.addedAt acima) ao lado dos filtros.
+            defaultSortOrder="desc" é o próprio padrão do componente
+            (mais novos primeiro); explícito aqui só pra documentar a
+            escolha — hoje não muda nada visualmente porque nenhum dos
+            14 projetos tem addedAt (sort estável mantém a ordem manual
+            entre eles), mas já deixa pronta a ordenação real assim que
+            um projeto novo ganhar addedAt. */}
         <Gallery
           className="portfolio-gallery w-full min-h-0 flex-1 sm:flex-none"
           categories={CATEGORIES}
           items={items}
           itemsPerPage={itemsPerPage}
+          sortable
+          defaultSortOrder="desc"
         />
       </div>
 

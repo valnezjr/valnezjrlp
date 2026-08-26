@@ -182,6 +182,21 @@ body.ms-page {
   font-size: var(--text-xs);
 }
 
+/* Botão de ordenação (Gallery.sortable) some com o rótulo em telas
+   estreitas — mesmo aperto de largura do comentário acima, e o rótulo
+   ("Mais novos"/"Mais antigos") era justo o suficiente pra empurrar as
+   pills pra 2 linhas (~30px extras que este layout sem scroll não tem
+   de sobra, achado ao introduzir `sortable`). Só o ícone (com
+   `aria-label` já cobrindo leitor de tela) cabe na mesma linha; o
+   rótulo volta a partir de 640px, junto com o resto dos filtros. */
+.portfolio-gallery .ms-gallery__sort {
+  padding: var(--space-1) var(--space-2);
+}
+
+.portfolio-gallery .ms-gallery__sort span {
+  display: none;
+}
+
 /* Card padrão da lib (foto 4:3 em cima, texto embaixo — sem inventar
    layout alternativo, pedido direto) cabe 1 por página em 360×740 e
    390×844, mas não em 360×640/375×667 (a foto sozinha já passa de
@@ -258,6 +273,14 @@ body.ms-page {
   .portfolio-gallery .ms-gallery__filter {
     padding: var(--space-2) var(--space-4);
     font-size: var(--text-sm);
+  }
+
+  .portfolio-gallery .ms-gallery__sort {
+    padding: var(--space-2) var(--space-3);
+  }
+
+  .portfolio-gallery .ms-gallery__sort span {
+    display: inline;
   }
 }
 
