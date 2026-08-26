@@ -190,7 +190,7 @@ export function Sobre() {
           </div>
           <div>
             <h1 className="ms-h2" style={{ marginBottom: 0 }}>
-              Sobre
+              Valnez Jr
             </h1>
             <p className="ms-text-xs ms-text-muted max-w-[480px] sm:max-w-[620px]">
               Designer desde 2018, especializado em web/app design desde 2022 — atendo remotamente
