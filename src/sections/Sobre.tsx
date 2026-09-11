@@ -69,6 +69,7 @@ const PROJECTS: Project[] = [
   { file: "13-id-blooming-acessorios", title: "Blooming Acessórios", description: "Branding para marca de acessórios femininos.", category: "brand" },
   { file: "14-id-andre-azevedo", title: "André Azevedo Nutricionista", description: "Branding para marca pessoal de nutricionista.", category: "brand" },
   { file: "16-id-lsrship", title: "LSR'ship", description: "Identidade visual e manual de marca para um serviço de corte e gravação a laser.", category: "brand", addedAt: "2026-08-26" },
+  { file: "17-id-impact-personalizados", title: "Impact Personalizados", description: "Identidade visual e sistema de aplicações para marca de brindes personalizados.", category: "brand", addedAt: "2026-09-11" },
 ];
 
 // Gallery (mothership-ds v1.7.0) com itemsPerPage: paginação nativa em
