@@ -107,8 +107,10 @@ Divulgar os serviços de Valnez Júnior, Designer Engineer, e converter visitant
 > (`00-Portfolio-Indice.pdf`/`-mobile`, copiado em `public/portfolio(-mobile)/`
 > desde 2026-08-10) fica só como arquivo interno — decisão direta de
 > Valnez, sem link/botão em nenhum lugar da UI. Não é conteúdo do site,
-> é material de apoio dele mesmo; permanece versionado ali só pra não se
-> perder, sem nenhuma seção precisando referenciá-lo.
+> é material de apoio dele mesmo, sem nenhuma seção precisando referenciá-lo.
+> **Atualização (2026-10-13):** saiu de `public/` para não ficar acessível por
+> URL direta; o original fica na pasta de trabalho do portfólio (`pdf/`) e no
+> histórico do git.
 
 ### 5.4 Contato
 - **Título:** "Vamos conversar?"
